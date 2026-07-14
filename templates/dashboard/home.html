@@ -1,0 +1,293 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- HERO SECTION -->
+    <div class="text-center mb-5">
+
+        <h1 class="display-4 fw-bold text-primary">
+            Welcome to Smart Community Hub
+        </h1>
+
+        <p class="lead text-muted mt-3">
+            A digital platform that empowers communities to report issues,
+            receive updates, discover opportunities, and stay connected.
+        </p>
+
+        <div class="mt-4">
+
+            {% if user.is_authenticated %}
+
+                <a href="/issues/report/" class="btn btn-primary btn-lg me-3">
+                    Report an Issue
+                </a>
+
+                <a href="/accounts/profile/" class="btn btn-outline-primary btn-lg">
+                     My Dashboard
+                </a>
+
+            {% else %}
+
+                <a href="/accounts/register/" class="btn btn-primary btn-lg me-3">
+                     Get Started
+                </a>
+
+                <a href="/accounts/login/" class="btn btn-outline-primary btn-lg">
+                    Login
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN MODULES -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+
+            <a href="/issues/" class="text-decoration-none">
+
+                <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                    <div class="display-3 mb-3">
+                        
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Community Issues
+                    </h4>
+
+                    <p class="text-muted">
+                        Browse all issues reported by community members.
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a href="/issues/report/" class="text-decoration-none">
+
+                <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                    <div class="display-3 mb-3">
+                        
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Report an Issue
+                    </h4>
+
+                    <p class="text-muted">
+                        Report water, electricity, road, crime or dumping issues.
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a href="/accounts/profile/" class="text-decoration-none">
+
+                <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                    <div class="display-3 mb-3">
+                        
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Dashboard
+                    </h4>
+
+                    <p class="text-muted">
+                        View your reports and monitor their progress.
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <h2 class="text-center fw-bold mb-4">
+        Platform Features
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                <div class="display-5">
+                    
+                </div>
+
+                <h5 class="mt-3">
+                    Notifications
+                </h5>
+
+                <p class="text-muted">
+                    Receive updates whenever your issue status changes.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                <div class="display-5">
+                    
+                </div>
+
+                <h5 class="mt-3">
+                    Community Map
+                </h5>
+
+                <p class="text-muted">
+                    View issue locations on an interactive map.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                <div class="display-5">
+                    
+                </div>
+
+                <h5 class="mt-3">
+                    Events
+                </h5>
+
+                <p class="text-muted">
+                    Stay informed about meetings and community activities.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card shadow border-0 h-100 text-center p-4">
+
+                <div class="display-5">
+                    
+                </div>
+
+                <h5 class="mt-3">
+                    Opportunities
+                </h5>
+
+                <p class="text-muted">
+                    Explore internships, jobs, bursaries and learnerships.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WHY SMART HUB -->
+
+    <div class="card shadow border-0 mt-5">
+
+        <div class="card-body p-5">
+
+            <h2 class="text-primary fw-bold mb-4 text-center">
+
+                Why Smart Community Hub?
+
+            </h2>
+
+            <div class="row">
+
+                <div class="col-md-4 text-center">
+
+                    <h1></h1>
+
+                    <h5>Fast Reporting</h5>
+
+                    <p class="text-muted">
+                        Report community problems within minutes.
+                    </p>
+
+                </div>
+
+                <div class="col-md-4 text-center">
+
+                    <h1></h1>
+
+                    <h5>Community Driven</h5>
+
+                    <p class="text-muted">
+                        Residents and leaders work together to solve problems.
+                    </p>
+
+                </div>
+
+                <div class="col-md-4 text-center">
+
+                    <h1></h1>
+
+                    <h5>Track Progress</h5>
+
+                    <p class="text-muted">
+                        Monitor every issue until it is resolved.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+   
+
+    <div class="text-center mt-5">
+
+        <p class="text-muted">
+
+            © 2026 Smart Community Hub
+
+            <br>
+
+            Empowering Communities Through Technology
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

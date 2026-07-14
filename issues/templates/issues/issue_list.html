@@ -1,0 +1,359 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Title -->
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold text-primary">
+            Community Issues
+        </h1>
+
+        <p class="text-muted">
+            Reported issues within the community and their current status.
+        </p>
+
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-5">
+
+        <!-- Total Issues -->
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a
+                href="{% url 'issue-list' %}"
+                class="text-decoration-none">
+
+                <div
+                    class="card stats-card shadow border-0 text-center p-4 h-100">
+
+                    <div class="display-5 mb-3">
+                        
+                    </div>
+
+                    <h6 class="text-muted">
+                        Total Issues
+                    </h6>
+
+                    <h1 class="text-primary fw-bold">
+                        {{ total_issues }}
+                    </h1>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- Pending -->
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a
+                href="/issues/?status=Pending"
+                class="text-decoration-none">
+
+                <div
+                    class="card stats-card shadow border-0 text-center p-4 h-100">
+
+                    <div class="display-5 mb-3">
+                        
+                    </div>
+
+                    <h6 class="text-muted">
+                        Pending
+                    </h6>
+
+                    <h1 class="text-warning fw-bold">
+                        {{ pending }}
+                    </h1>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- In Progress -->
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a
+                href="/issues/?status=In Progress"
+                class="text-decoration-none">
+
+                <div
+                    class="card stats-card shadow border-0 text-center p-4 h-100">
+
+                    <div class="display-5 mb-3">
+                        
+                    </div>
+
+                    <h6 class="text-muted">
+                        In Progress
+                    </h6>
+
+                    <h1 class="text-primary fw-bold">
+                        {{ in_progress }}
+                    </h1>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- Resolved -->
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a
+                href="/issues/?status=Resolved"
+                class="text-decoration-none">
+
+                <div
+                    class="card stats-card shadow border-0 text-center p-4 h-100">
+
+                    <div class="display-5 mb-3">
+                        
+                    </div>
+
+                    <h6 class="text-muted">
+                        Resolved
+                    </h6>
+
+                    <h1 class="text-success fw-bold">
+                        {{ resolved }}
+                    </h1>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="card shadow border-0 rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+                    <!-- Search -->
+                    <div class="col-md-5">
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="🔍 Search issues..."
+                            value="{{ search }}"
+                        >
+
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-4">
+
+                        <select
+                            name="category"
+                            class="form-select">
+
+                            <option value="">
+                                All Categories
+                            </option>
+
+                            <option value="Water">
+                                Water
+                            </option>
+
+                            <option value="Electricity">
+                                Electricity
+                            </option>
+
+                            <option value="Roads">
+                                Roads
+                            </option>
+
+                            <option value="Crime">
+                                Crime
+                            </option>
+
+                            <option value="Dumping">
+                                Illegal Dumping
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Button -->
+                    <div class="col-md-3">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Issues Cards -->
+    <div class="row">
+
+        {% for issue in issues %}
+
+        <div class="col-md-6 col-lg-4 mb-4">
+
+            <div class="card issue-card shadow border-0 h-100">
+
+                {% if issue.image %}
+
+                    <img
+                        src="{{ issue.image.url }}"
+                        class="card-img-top"
+                        style="height:220px; object-fit:cover;"
+                    >
+
+                {% else %}
+
+                    <img
+                        src="https://via.placeholder.com/600x220?text=No+Image"
+                        class="card-img-top"
+                        style="height:220px; object-fit:cover;"
+                    >
+
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="fw-bold text-primary">
+                        {{ issue.title }}
+                    </h5>
+
+                    <p class="text-muted">
+                        {{ issue.description|truncatewords:20 }}
+                    </p>
+
+                    <p class="mb-2">
+                        
+                        <strong>Location:</strong>
+                        {{ issue.location }}
+                    </p>
+
+                    <p class="mb-3">
+                        
+                        <strong>Category:</strong>
+                        {{ issue.category }}
+                    </p>
+
+                    <!-- Status Badge -->
+                    {% if issue.status == 'Pending' %}
+
+                        <span class="badge bg-warning mb-3">
+                            {{ issue.status }}
+                        </span>
+
+                    {% elif issue.status == 'In Progress' %}
+
+                        <span class="badge bg-primary mb-3">
+                            {{ issue.status }}
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-success mb-3">
+                            {{ issue.status }}
+                        </span>
+
+                    {% endif %}
+
+                    <div class="mt-auto">
+
+                        <a
+                            href="{% url 'issue-detail' issue.id %}"
+                            class="btn btn-primary w-100 mb-2">
+
+                            View Details
+
+                        </a>
+
+                        {% if request.user == issue.user %}
+
+                        <div class="d-flex gap-2">
+
+                            <a
+                                href="{% url 'edit-issue' issue.id %}"
+                                class="btn btn-warning flex-fill">
+
+                                Edit
+
+                            </a>
+
+                            <a
+                                href="{% url 'delete-issue' issue.id %}"
+                                class="btn btn-danger flex-fill">
+
+                                Delete
+
+                            </a>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer bg-white border-0">
+
+                    <small class="text-muted">
+                        📅 {{ issue.created_at|date:"d M Y" }}
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="text-center py-5">
+
+            <h4 class="text-muted mb-4">
+                No issues reported yet.
+            </h4>
+
+            <a
+                href="{% url 'report-issue' %}"
+                class="btn btn-primary btn-lg">
+
+                Report First Issue
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

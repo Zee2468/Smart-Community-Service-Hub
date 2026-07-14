@@ -1,0 +1,124 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+
+                    <h2 class="fw-bold mb-2">
+                        Report Community Issue
+                    </h2>
+
+                    <p class="mb-0">
+                        Help improve your community by reporting issues.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-5">
+
+                    <form
+                        method="POST"
+                        enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <!-- Title -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Issue Title
+                            </label>
+
+                            {{ form.title }}
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Description
+                            </label>
+
+                            {{ form.description }}
+
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Category
+                            </label>
+
+                            {{ form.category }}
+
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Location
+                            </label>
+
+                            {{ form.location }}
+
+                        </div>
+
+                        <!-- Image -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Upload Image
+                            </label>
+
+                            {{ form.image }}
+
+                            <small class="text-muted d-block mt-2">
+                                Upload a photo of the issue (optional).
+                            </small>
+
+                        </div>
+
+                        <div class="d-grid gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg">
+
+                                Submit Report
+
+                            </button>
+
+                            <a
+                                href="{% url 'issue-list' %}"
+                                class="btn btn-outline-secondary">
+
+                                ← Back to Community Issues
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
