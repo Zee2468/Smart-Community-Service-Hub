@@ -1,12 +1,245 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Smart Community Hub</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
 
-    <h1>Welcome to Smart Community Hub</h1>
-    <p>Connecting communities through technology.</p>
+{% block content %}
 
-</body>
-</html>
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="display-4 fw-bold text-primary">
+
+            Welcome to Smart Community Hub
+
+        </h1>
+
+        <p class="lead text-muted">
+
+            Connecting communities through technology.
+
+            Report issues, discover events,
+
+            explore opportunities and build a stronger community.
+
+        </p>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'profile' %}"
+               class="btn btn-primary btn-lg mt-3">
+
+                Go to Dashboard
+
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'register' %}"
+               class="btn btn-primary btn-lg mt-3 me-2">
+
+                Get Started
+
+            </a>
+
+            <a href="{% url 'login' %}"
+               class="btn btn-outline-primary btn-lg mt-3">
+
+                Login
+
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card stats-card shadow">
+
+                <div class="card-body text-center">
+
+                    <h1>📢</h1>
+
+                    <h6>Total Issues</h6>
+
+                    <h2 class="text-primary">
+
+                        {{ total_issues }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card stats-card shadow">
+
+                <div class="card-body text-center">
+
+                    <h1>🟡</h1>
+
+                    <h6>Pending</h6>
+
+                    <h2 class="text-warning">
+
+                        {{ pending }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card stats-card shadow">
+
+                <div class="card-body text-center">
+
+                    <h1>🔵</h1>
+
+                    <h6>In Progress</h6>
+
+                    <h2 class="text-primary">
+
+                        {{ in_progress }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card stats-card shadow">
+
+                <div class="card-body text-center">
+
+                    <h1>🟢</h1>
+
+                    <h6>Resolved</h6>
+
+                    <h2 class="text-success">
+
+                        {{ resolved }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="col-md-4 mb-4">
+
+            <a href="{% url 'issue-list' %}"
+               class="text-decoration-none">
+
+                <div class="card dashboard-card h-100">
+
+                    <div class="card-body text-center">
+
+                        <h1>📋</h1>
+
+                        <h4>
+
+                            Community Issues
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            View all reported community issues.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <a href="{% url 'report-issue' %}"
+               class="text-decoration-none">
+
+                <div class="card dashboard-card h-100">
+
+                    <div class="card-body text-center">
+
+                        <h1>➕</h1>
+
+                        <h4>
+
+                            Report Issue
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            Submit a new community issue.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <a href="{% url 'event-list' %}"
+               class="text-decoration-none">
+
+                <div class="card dashboard-card h-100">
+
+                    <div class="card-body text-center">
+
+                        <h1>📅</h1>
+
+                        <h4>
+
+                            Community Events
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            Discover upcoming community events.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

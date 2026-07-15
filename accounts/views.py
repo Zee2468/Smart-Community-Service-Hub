@@ -8,29 +8,39 @@ from issues.models import Issue
 
 def register(request):
 
+    if request.user.is_authenticated:
+        return redirect('profile')
+
     form = RegisterForm()
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
         form = RegisterForm(request.POST)
 
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect("login")
 
     return render(
         request,
-        'accounts/register.html',
-        {'form': form}
+        "accounts/register.html",
+        {
+            "form": form
+        }
     )
 
 
 def login_user(request):
 
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect("profile")
 
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    error = None
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
         user = authenticate(
             request,
@@ -42,12 +52,17 @@ def login_user(request):
 
             login(request, user)
 
-            # Redirect to profile after login
-            return redirect('profile')
+            return redirect("profile")
+
+        else:
+            error = "Invalid username or password."
 
     return render(
         request,
-        'accounts/login.html'
+        "accounts/login.html",
+        {
+            "error": error
+        }
     )
 
 
@@ -60,29 +75,34 @@ def profile(request):
 
     pending = Issue.objects.filter(
         user=request.user,
-        status='Pending'
+        status="Pending"
     ).count()
 
     in_progress = Issue.objects.filter(
         user=request.user,
-        status='In Progress'
+        status="In Progress"
     ).count()
 
     resolved = Issue.objects.filter(
         user=request.user,
-        status='Resolved'
+        status="Resolved"
     ).count()
 
     context = {
-        'total_issues': total_issues,
-        'pending': pending,
-        'in_progress': in_progress,
-        'resolved': resolved,
+
+        "total_issues": total_issues,
+
+        "pending": pending,
+
+        "in_progress": in_progress,
+
+        "resolved": resolved,
+
     }
 
     return render(
         request,
-        'accounts/profile.html',
+        "accounts/profile.html",
         context
     )
 
@@ -92,4 +112,4 @@ def logout_user(request):
 
     logout(request)
 
-    return redirect('login')
+    return redirect("login")

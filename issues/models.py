@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Meta:
+    ordering = ["-created_at"]
 
 class Issue(models.Model):
 

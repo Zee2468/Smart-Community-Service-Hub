@@ -2,34 +2,104 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<div class="row justify-content-center mt-5">
 
-<form method="POST">
+    <div class="col-md-6 col-lg-5">
 
-    {% csrf_token %}
+        <div class="card shadow-lg border-0 rounded-4">
 
-    <div class="mb-3">
-        <label>Username</label>
-        <input
-            type="text"
-            name="username"
-            class="form-control"
-        >
+            <div class="card-body p-5">
+
+                <div class="text-center mb-4">
+
+                    <h2 class="fw-bold text-primary">
+                        Welcome Back
+                    </h2>
+
+                    <p class="text-muted">
+                        Login to your Smart Community Hub account
+                    </p>
+
+                </div>
+
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            placeholder="Enter your username"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label fw-semibold">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button type="submit" class="btn btn-primary btn-lg">
+
+                            Login
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr>
+
+                <div class="text-center">
+
+                    <p class="mb-0">
+
+                        Don't have an account?
+
+                        <a href="{% url 'register' %}" class="text-decoration-none fw-bold">
+
+                            Register
+
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label>Password</label>
-        <input
-            type="password"
-            name="password"
-            class="form-control"
-        >
-    </div>
-
-    <button class="btn btn-primary">
-        Login
-    </button>
-
-</form>
+</div>
 
 {% endblock %}

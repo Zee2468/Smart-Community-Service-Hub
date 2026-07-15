@@ -2,13 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Issue
 from .forms import IssueForm
+from notifications.models import Notification
+import json
 
 
 def issue_list(request):
+
     issues = Issue.objects.all().order_by('-created_at')
 
-    search = request.GET.get('search')
-    category = request.GET.get('category')
+    search = request.GET.get("search")
+    category = request.GET.get("category")
 
     if search:
         issues = issues.filter(
@@ -23,30 +26,38 @@ def issue_list(request):
     total_issues = Issue.objects.count()
 
     pending = Issue.objects.filter(
-        status='Pending'
+        status="Pending"
     ).count()
 
     in_progress = Issue.objects.filter(
-        status='In Progress'
+        status="In Progress"
     ).count()
 
     resolved = Issue.objects.filter(
-        status='Resolved'
+        status="Resolved"
     ).count()
 
     context = {
-        'issues': issues,
-        'total_issues': total_issues,
-        'pending': pending,
-        'in_progress': in_progress,
-        'resolved': resolved,
-        'search': search,
-        'category': category,
+
+        "issues": issues,
+
+        "total_issues": total_issues,
+
+        "pending": pending,
+
+        "in_progress": in_progress,
+
+        "resolved": resolved,
+
+        "search": search,
+
+        "category": category,
+
     }
 
     return render(
         request,
-        'issues/issue_list.html',
+        "issues/issue_list.html",
         context
     )
 
@@ -56,13 +67,15 @@ def report_issue(request):
 
     form = IssueForm()
 
-    if request.method == 'POST':
+    if request.method == "POST":
+
         form = IssueForm(
             request.POST,
             request.FILES
         )
 
         if form.is_valid():
+
             issue = form.save(
                 commit=False
             )
@@ -70,18 +83,27 @@ def report_issue(request):
             issue.user = request.user
             issue.save()
 
-            return redirect(
-                'issue-list'
+            # Create Notification
+            Notification.objects.create(
+
+                user=request.user,
+
+                title="Issue Submitted",
+
+                message=f"Your issue '{issue.title}' has been submitted successfully."
+
             )
 
-    context = {
-        'form': form
-    }
+            return redirect(
+                "issue-list"
+            )
 
     return render(
         request,
-        'issues/report_issue.html',
-        context
+        "issues/report_issue.html",
+        {
+            "form": form
+        }
     )
 
 
@@ -92,14 +114,12 @@ def issue_detail(request, pk):
         pk=pk
     )
 
-    context = {
-        'issue': issue
-    }
-
     return render(
         request,
-        'issues/issue_detail.html',
-        context
+        "issues/issue_detail.html",
+        {
+            "issue": issue
+        }
     )
 
 
@@ -116,7 +136,7 @@ def edit_issue(request, pk):
         instance=issue
     )
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
         form = IssueForm(
             request.POST,
@@ -125,22 +145,31 @@ def edit_issue(request, pk):
         )
 
         if form.is_valid():
+
             form.save()
 
+            Notification.objects.create(
+
+                user=request.user,
+
+                title="Issue Updated",
+
+                message=f"Your issue '{issue.title}' has been updated."
+
+            )
+
             return redirect(
-                'issue-detail',
+                "issue-detail",
                 pk=issue.id
             )
 
-    context = {
-        'form': form,
-        'issue': issue
-    }
-
     return render(
         request,
-        'issues/edit_issue.html',
-        context
+        "issues/edit_issue.html",
+        {
+            "form": form,
+            "issue": issue
+        }
     )
 
 
@@ -153,41 +182,63 @@ def delete_issue(request, pk):
         user=request.user
     )
 
-    if request.method == 'POST':
+    if request.method == "POST":
+
+        Notification.objects.create(
+
+            user=request.user,
+
+            title="Issue Deleted",
+
+            message=f"Your issue '{issue.title}' has been deleted."
+
+        )
+
         issue.delete()
 
         return redirect(
-            'issue-list'
+            "issue-list"
         )
-
-    context = {
-        'issue': issue
-    }
 
     return render(
         request,
-        'issues/delete_issue.html',
-        context
+        "issues/delete_issue.html",
+        {
+            "issue": issue
+        }
     )
-    from django.shortcuts import render
-from .models import Issue
-import json
 
 
+@login_required
 def dashboard(request):
-    total_issues = Issue.objects.count()
-    pending = Issue.objects.filter(status='Pending').count()
+
+    total_issues = Issue.objects.filter(
+        user=request.user
+    ).count()
+
+    pending = Issue.objects.filter(
+        user=request.user,
+        status="Pending"
+    ).count()
+
     in_progress = Issue.objects.filter(
-        status='In Progress'
+        user=request.user,
+        status="In Progress"
     ).count()
+
     resolved = Issue.objects.filter(
-        status='Resolved'
+        user=request.user,
+        status="Resolved"
     ).count()
+
+    recent_issues = Issue.objects.filter(
+        user=request.user
+    ).order_by("-created_at")[:5]
 
     chart_labels = [
-        'Pending',
-        'In Progress',
-        'Resolved'
+        "Pending",
+        "In Progress",
+        "Resolved"
     ]
 
     chart_data = [
@@ -197,16 +248,25 @@ def dashboard(request):
     ]
 
     context = {
-        'total_issues': total_issues,
-        'pending': pending,
-        'in_progress': in_progress,
-        'resolved': resolved,
-        'chart_labels': json.dumps(chart_labels),
-        'chart_data': json.dumps(chart_data),
+
+        "total_issues": total_issues,
+
+        "pending": pending,
+
+        "in_progress": in_progress,
+
+        "resolved": resolved,
+
+        "recent_issues": recent_issues,
+
+        "chart_labels": json.dumps(chart_labels),
+
+        "chart_data": json.dumps(chart_data),
+
     }
 
     return render(
         request,
-        'issues/dashboard.html',
+        "issues/dashboard.html",
         context
     )

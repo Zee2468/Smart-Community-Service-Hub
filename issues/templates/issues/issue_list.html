@@ -4,99 +4,143 @@
 
 <div class="container py-5">
 
-    <!-- Page Title -->
+    <!-- ========================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================= -->
+
     <div class="text-center mb-5">
 
-        <h1 class="fw-bold text-primary">
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="bi bi-exclamation-circle-fill"></i>
             Community Issues
         </h1>
 
-        <p class="text-muted">
-            Reported issues within the community and their current status.
+        <p class="lead text-muted">
+            Report, monitor and track issues affecting your community.
         </p>
 
+        {% if user.is_authenticated %}
+        <a href="{% url 'report-issue' %}" class="btn btn-primary btn-lg mt-3">
+            <i class="bi bi-plus-circle"></i>
+            Report New Issue
+        </a>
+        {% endif %}
+
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="row mb-5">
 
-        <!-- Total Issues -->
-        <div class="col-md-6 col-lg-3 mb-4">
+    <!-- ========================= -->
+    <!-- STATISTICS -->
+    <!-- ========================= -->
 
-            <a
-                href="{% url 'issue-list' %}"
-                class="text-decoration-none">
+    <div class="row g-4 mb-5">
 
-                <div
-                    class="card stats-card shadow border-0 text-center p-4 h-100">
+        <!-- Total -->
 
-                    <div class="display-5 mb-3">
-                        
+        <div class="col-lg-3 col-md-6">
+
+            <a href="{% url 'issue-list' %}"
+               class="text-decoration-none">
+
+                <div class="card stats-card h-100 text-center">
+
+                    <div class="card-body">
+
+                        <div class="display-4 text-primary mb-3">
+
+                            <i class="bi bi-clipboard-data-fill"></i>
+
+                        </div>
+
+                        <h6 class="text-muted">
+
+                            Total Issues
+
+                        </h6>
+
+                        <h2 class="fw-bold text-primary">
+
+                            {{ total_issues }}
+
+                        </h2>
+
                     </div>
-
-                    <h6 class="text-muted">
-                        Total Issues
-                    </h6>
-
-                    <h1 class="text-primary fw-bold">
-                        {{ total_issues }}
-                    </h1>
 
                 </div>
 
             </a>
 
         </div>
+
 
         <!-- Pending -->
-        <div class="col-md-6 col-lg-3 mb-4">
 
-            <a
-                href="/issues/?status=Pending"
-                class="text-decoration-none">
+        <div class="col-lg-3 col-md-6">
 
-                <div
-                    class="card stats-card shadow border-0 text-center p-4 h-100">
+            <a href="{% url 'issue-list' %}?status=Pending"
+               class="text-decoration-none">
 
-                    <div class="display-5 mb-3">
-                        
+                <div class="card stats-card h-100 text-center">
+
+                    <div class="card-body">
+
+                        <div class="display-4 text-warning mb-3">
+
+                            <i class="bi bi-hourglass-split"></i>
+
+                        </div>
+
+                        <h6 class="text-muted">
+
+                            Pending
+
+                        </h6>
+
+                        <h2 class="fw-bold text-warning">
+
+                            {{ pending }}
+
+                        </h2>
+
                     </div>
-
-                    <h6 class="text-muted">
-                        Pending
-                    </h6>
-
-                    <h1 class="text-warning fw-bold">
-                        {{ pending }}
-                    </h1>
 
                 </div>
 
             </a>
 
         </div>
+
 
         <!-- In Progress -->
-        <div class="col-md-6 col-lg-3 mb-4">
 
-            <a
-                href="/issues/?status=In Progress"
-                class="text-decoration-none">
+        <div class="col-lg-3 col-md-6">
 
-                <div
-                    class="card stats-card shadow border-0 text-center p-4 h-100">
+            <a href="{% url 'issue-list' %}?status=In Progress"
+               class="text-decoration-none">
 
-                    <div class="display-5 mb-3">
-                        
+                <div class="card stats-card h-100 text-center">
+
+                    <div class="card-body">
+
+                        <div class="display-4 text-primary mb-3">
+
+                            <i class="bi bi-tools"></i>
+
+                        </div>
+
+                        <h6 class="text-muted">
+
+                            In Progress
+
+                        </h6>
+
+                        <h2 class="fw-bold text-primary">
+
+                            {{ in_progress }}
+
+                        </h2>
+
                     </div>
-
-                    <h6 class="text-muted">
-                        In Progress
-                    </h6>
-
-                    <h1 class="text-primary fw-bold">
-                        {{ in_progress }}
-                    </h1>
 
                 </div>
 
@@ -104,27 +148,37 @@
 
         </div>
 
+
         <!-- Resolved -->
-        <div class="col-md-6 col-lg-3 mb-4">
 
-            <a
-                href="/issues/?status=Resolved"
-                class="text-decoration-none">
+        <div class="col-lg-3 col-md-6">
 
-                <div
-                    class="card stats-card shadow border-0 text-center p-4 h-100">
+            <a href="{% url 'issue-list' %}?status=Resolved"
+               class="text-decoration-none">
 
-                    <div class="display-5 mb-3">
-                        
+                <div class="card stats-card h-100 text-center">
+
+                    <div class="card-body">
+
+                        <div class="display-4 text-success mb-3">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                        </div>
+
+                        <h6 class="text-muted">
+
+                            Resolved
+
+                        </h6>
+
+                        <h2 class="fw-bold text-success">
+
+                            {{ resolved }}
+
+                        </h2>
+
                     </div>
-
-                    <h6 class="text-muted">
-                        Resolved
-                    </h6>
-
-                    <h1 class="text-success fw-bold">
-                        {{ resolved }}
-                    </h1>
 
                 </div>
 
@@ -134,7 +188,12 @@
 
     </div>
 
-    <!-- Search and Filter -->
+
+
+    <!-- ========================= -->
+    <!-- SEARCH -->
+    <!-- ========================= -->
+
     <div class="card shadow border-0 rounded-4 mb-5">
 
         <div class="card-body p-4">
@@ -143,21 +202,18 @@
 
                 <div class="row g-3">
 
-                    <!-- Search -->
-                    <div class="col-md-5">
+                    <div class="col-lg-5">
 
                         <input
                             type="text"
                             name="search"
                             class="form-control"
-                            placeholder="🔍 Search issues..."
-                            value="{{ search }}"
-                        >
+                            placeholder="Search issue title..."
+                            value="{{ search|default:'' }}">
 
                     </div>
 
-                    <!-- Category -->
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
 
                         <select
                             name="category"
@@ -167,23 +223,28 @@
                                 All Categories
                             </option>
 
-                            <option value="Water">
+                            <option value="Water"
+                                {% if category == "Water" %}selected{% endif %}>
                                 Water
                             </option>
 
-                            <option value="Electricity">
+                            <option value="Electricity"
+                                {% if category == "Electricity" %}selected{% endif %}>
                                 Electricity
                             </option>
 
-                            <option value="Roads">
+                            <option value="Roads"
+                                {% if category == "Roads" %}selected{% endif %}>
                                 Roads
                             </option>
 
-                            <option value="Crime">
+                            <option value="Crime"
+                                {% if category == "Crime" %}selected{% endif %}>
                                 Crime
                             </option>
 
-                            <option value="Dumping">
+                            <option value="Dumping"
+                                {% if category == "Dumping" %}selected{% endif %}>
                                 Illegal Dumping
                             </option>
 
@@ -191,12 +252,11 @@
 
                     </div>
 
-                    <!-- Button -->
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
 
-                        <button
-                            type="submit"
-                            class="btn btn-primary w-100">
+                        <button class="btn btn-primary w-100">
+
+                            <i class="bi bi-search"></i>
 
                             Search
 
@@ -212,119 +272,170 @@
 
     </div>
 
-    <!-- Issues Cards -->
+
+    <!-- ========================= -->
+    <!-- ISSUE CARDS -->
+    <!-- ========================= -->
+
     <div class="row">
 
-        {% for issue in issues %}
+    {% for issue in issues %}
 
-        <div class="col-md-6 col-lg-4 mb-4">
+    <div class="col-lg-4 col-md-6 mb-4">
 
-            <div class="card issue-card shadow border-0 h-100">
+        <div class="card issue-card shadow-lg border-0 h-100">
 
-                {% if issue.image %}
+            <!-- Image -->
 
-                    <img
-                        src="{{ issue.image.url }}"
-                        class="card-img-top"
-                        style="height:220px; object-fit:cover;"
-                    >
+            {% if issue.image %}
+
+                <img src="{{ issue.image.url }}"
+                     class="card-img-top"
+                     style="height:230px;object-fit:cover;">
+
+            {% else %}
+
+                <img src="https://via.placeholder.com/600x230?text=No+Image"
+                     class="card-img-top"
+                     style="height:230px;object-fit:cover;">
+
+            {% endif %}
+
+
+            <div class="card-body d-flex flex-column">
+
+                <!-- Title -->
+
+                <h4 class="fw-bold text-primary mb-3">
+
+                    {{ issue.title }}
+
+                </h4>
+
+                <!-- Description -->
+
+                <p class="text-muted">
+
+                    {{ issue.description|truncatewords:25 }}
+
+                </p>
+
+                <hr>
+
+                <!-- Information -->
+
+                <p class="mb-2">
+
+                    <i class="bi bi-geo-alt-fill text-danger"></i>
+
+                    <strong>Location:</strong>
+
+                    {{ issue.location }}
+
+                </p>
+
+                <p class="mb-2">
+
+                    <i class="bi bi-folder-fill text-primary"></i>
+
+                    <strong>Category:</strong>
+
+                    {{ issue.category }}
+
+                </p>
+
+                <p class="mb-2">
+
+                    <i class="bi bi-person-fill text-success"></i>
+
+                    <strong>Reported by:</strong>
+
+                    {{ issue.user.username }}
+
+                </p>
+
+                <p class="mb-3">
+
+                    <i class="bi bi-calendar-event"></i>
+
+                    {{ issue.created_at|date:"d M Y" }}
+
+                </p>
+
+                <!-- Status -->
+
+                {% if issue.status == "Pending" %}
+
+                    <span class="badge bg-warning text-dark mb-3">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                        Pending
+
+                    </span>
+
+                {% elif issue.status == "In Progress" %}
+
+                    <span class="badge bg-primary mb-3">
+
+                        <i class="bi bi-tools"></i>
+
+                        In Progress
+
+                    </span>
 
                 {% else %}
 
-                    <img
-                        src="https://via.placeholder.com/600x220?text=No+Image"
-                        class="card-img-top"
-                        style="height:220px; object-fit:cover;"
-                    >
+                    <span class="badge bg-success mb-3">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        Resolved
+
+                    </span>
 
                 {% endif %}
 
-                <div class="card-body d-flex flex-column">
+                <div class="mt-auto">
 
-                    <h5 class="fw-bold text-primary">
-                        {{ issue.title }}
-                    </h5>
+                    <!-- View -->
 
-                    <p class="text-muted">
-                        {{ issue.description|truncatewords:20 }}
-                    </p>
+                    <a href="{% url 'issue-detail' issue.id %}"
+                       class="btn btn-primary w-100 mb-2">
 
-                    <p class="mb-2">
-                        
-                        <strong>Location:</strong>
-                        {{ issue.location }}
-                    </p>
+                        <i class="bi bi-eye-fill"></i>
 
-                    <p class="mb-3">
-                        
-                        <strong>Category:</strong>
-                        {{ issue.category }}
-                    </p>
+                        View Details
 
-                    <!-- Status Badge -->
-                    {% if issue.status == 'Pending' %}
+                    </a>
 
-                        <span class="badge bg-warning mb-3">
-                            {{ issue.status }}
-                        </span>
+                    <!-- Owner Buttons -->
 
-                    {% elif issue.status == 'In Progress' %}
+                    {% if request.user == issue.user %}
 
-                        <span class="badge bg-primary mb-3">
-                            {{ issue.status }}
-                        </span>
+                    <div class="d-flex gap-2">
 
-                    {% else %}
+                        <a href="{% url 'edit-issue' issue.id %}"
+                           class="btn btn-warning flex-fill">
 
-                        <span class="badge bg-success mb-3">
-                            {{ issue.status }}
-                        </span>
+                            <i class="bi bi-pencil-square"></i>
 
-                    {% endif %}
-
-                    <div class="mt-auto">
-
-                        <a
-                            href="{% url 'issue-detail' issue.id %}"
-                            class="btn btn-primary w-100 mb-2">
-
-                            View Details
+                            Edit
 
                         </a>
 
-                        {% if request.user == issue.user %}
+                        <a href="{% url 'delete-issue' issue.id %}"
+                           class="btn btn-danger flex-fill">
 
-                        <div class="d-flex gap-2">
+                            <i class="bi bi-trash-fill"></i>
 
-                            <a
-                                href="{% url 'edit-issue' issue.id %}"
-                                class="btn btn-warning flex-fill">
+                            Delete
 
-                                Edit
-
-                            </a>
-
-                            <a
-                                href="{% url 'delete-issue' issue.id %}"
-                                class="btn btn-danger flex-fill">
-
-                                Delete
-
-                            </a>
-
-                        </div>
-
-                        {% endif %}
+                        </a>
 
                     </div>
 
-                </div>
-
-                <div class="card-footer bg-white border-0">
-
-                    <small class="text-muted">
-                        📅 {{ issue.created_at|date:"d M Y" }}
-                    </small>
+                    {% endif %}
 
                 </div>
 
@@ -332,27 +443,63 @@
 
         </div>
 
-        {% empty %}
+    </div>
 
-        <div class="text-center py-5">
+    {% empty %}
 
-            <h4 class="text-muted mb-4">
-                No issues reported yet.
-            </h4>
+<div class="col-12">
 
-            <a
-                href="{% url 'report-issue' %}"
-                class="btn btn-primary btn-lg">
+    <div class="card shadow border-0">
 
-                Report First Issue
+        <div class="card-body text-center py-5">
+
+            <div class="display-1 mb-4">
+                <i class="bi bi-inbox text-secondary"></i>
+            </div>
+
+            <h2 class="fw-bold text-secondary">
+
+                No Issues Found
+
+            </h2>
+
+            <p class="text-muted mb-4">
+
+                There are currently no issues matching your search.
+
+            </p>
+
+            {% if user.is_authenticated %}
+
+            <a href="{% url 'report-issue' %}"
+               class="btn btn-primary btn-lg">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Report the First Issue
 
             </a>
 
+            {% else %}
+
+            <a href="{% url 'login' %}"
+               class="btn btn-primary btn-lg">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+
+                Login to Report an Issue
+
+            </a>
+
+            {% endif %}
+
         </div>
 
-        {% endfor %}
-
     </div>
+
+</div>
+
+{% endfor %}
 
 </div>
 

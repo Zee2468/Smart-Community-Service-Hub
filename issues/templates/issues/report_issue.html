@@ -10,100 +10,139 @@
 
             <div class="card shadow-lg border-0 rounded-4">
 
-                <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+                <!-- Header -->
+                <div class="card-header bg-primary text-white text-center py-4">
 
                     <h2 class="fw-bold mb-2">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
                         Report Community Issue
                     </h2>
 
                     <p class="mb-0">
-                        Help improve your community by reporting issues.
+                        Help improve your community by reporting an issue.
                     </p>
 
                 </div>
 
                 <div class="card-body p-5">
 
-                    <form
-                        method="POST"
-                        enctype="multipart/form-data">
+                    <form method="POST" enctype="multipart/form-data">
 
                         {% csrf_token %}
+
+                        <!-- Display Form Errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
 
                         <!-- Title -->
                         <div class="mb-4">
 
-                            <label class="form-label fw-semibold">
-                                Issue Title
+                            <label class="form-label fw-bold">
+                                Issue Title <span class="text-danger">*</span>
                             </label>
 
                             {{ form.title }}
+
+                            {% for error in form.title.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
 
                         </div>
 
                         <!-- Description -->
                         <div class="mb-4">
 
-                            <label class="form-label fw-semibold">
-                                Description
+                            <label class="form-label fw-bold">
+                                Description <span class="text-danger">*</span>
                             </label>
 
                             {{ form.description }}
+
+                            {% for error in form.description.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
 
                         </div>
 
                         <!-- Category -->
                         <div class="mb-4">
 
-                            <label class="form-label fw-semibold">
-                                Category
+                            <label class="form-label fw-bold">
+                                Category <span class="text-danger">*</span>
                             </label>
 
                             {{ form.category }}
+
+                            {% for error in form.category.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
 
                         </div>
 
                         <!-- Location -->
                         <div class="mb-4">
 
-                            <label class="form-label fw-semibold">
-                                Location
+                            <label class="form-label fw-bold">
+                                Location <span class="text-danger">*</span>
                             </label>
 
                             {{ form.location }}
+
+                            {% for error in form.location.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
 
                         </div>
 
                         <!-- Image -->
                         <div class="mb-4">
 
-                            <label class="form-label fw-semibold">
+                            <label class="form-label fw-bold">
                                 Upload Image
                             </label>
 
                             {{ form.image }}
 
                             <small class="text-muted d-block mt-2">
-                                Upload a photo of the issue (optional).
+                                Upload a photo of the issue (Optional).
                             </small>
+
+                            {% for error in form.image.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
 
                         </div>
 
-                        <div class="d-grid gap-2">
+                        <!-- Buttons -->
+                        <div class="d-grid gap-3">
 
-                            <button
-                                type="submit"
-                                class="btn btn-primary btn-lg">
+                            <button type="submit" class="btn btn-primary btn-lg">
 
+                                <i class="bi bi-send-fill"></i>
                                 Submit Report
 
                             </button>
 
-                            <a
-                                href="{% url 'issue-list' %}"
-                                class="btn btn-outline-secondary">
+                            <a href="{% url 'issue-list' %}"
+                               class="btn btn-outline-secondary btn-lg">
 
-                                ← Back to Community Issues
+                                <i class="bi bi-arrow-left"></i>
+                                Back to Community Issues
 
                             </a>
 
