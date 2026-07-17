@@ -2,104 +2,339 @@
 
 {% block content %}
 
-<div class="row justify-content-center mt-5">
+<style>
 
-    <div class="col-md-6 col-lg-5">
 
-        <div class="card shadow-lg border-0 rounded-4">
 
-            <div class="card-body p-5">
+.login-page{
 
-                <div class="text-center mb-4">
+    min-height:100vh;
 
-                    <h2 class="fw-bold text-primary">
-                        Welcome Back
-                    </h2>
+    display:flex;
 
-                    <p class="text-muted">
-                        Login to your Smart Community Hub account
-                    </p>
+    justify-content:center;
 
-                </div>
+    align-items:center;
 
-                {% if error %}
-                    <div class="alert alert-danger">
-                        {{ error }}
-                    </div>
-                {% endif %}
+    padding:80px 20px;
 
-                <form method="POST">
+    background:
+    linear-gradient(rgba(35,45,40,.78),
+    rgba(35,45,40,.78)),
+    url("/media/images/road-with-crack-middle-generative-ai_1036445-6549.avif");
 
-                    {% csrf_token %}
+    background-size:cover;
 
-                    <div class="mb-3">
+    background-position:center;
 
-                        <label class="form-label fw-semibold">
-                            Username
-                        </label>
+}
 
-                        <input
-                            type="text"
-                            name="username"
-                            class="form-control"
-                            placeholder="Enter your username"
-                            required
-                        >
+.login-card{
 
-                    </div>
+    width:100%;
 
-                    <div class="mb-4">
+    max-width:550px;
 
-                        <label class="form-label fw-semibold">
-                            Password
-                        </label>
+    background:rgba(255,255,255,.96);
 
-                        <input
-                            type="password"
-                            name="password"
-                            class="form-control"
-                            placeholder="Enter your password"
-                            required
-                        >
+    backdrop-filter:blur(12px);
 
-                    </div>
+    border-radius:30px;
 
-                    <div class="d-grid">
+    padding:50px;
 
-                        <button type="submit" class="btn btn-primary btn-lg">
+    box-shadow:0 25px 60px rgba(0,0,0,.20);
 
-                            Login
+    animation:fadeUp .8s ease;
 
-                        </button>
+}
 
-                    </div>
+@keyframes fadeUp{
 
-                </form>
+from{
 
-                <hr>
+opacity:0;
 
-                <div class="text-center">
+transform:translateY(40px);
 
-                    <p class="mb-0">
+}
 
-                        Don't have an account?
+to{
 
-                        <a href="{% url 'register' %}" class="text-decoration-none fw-bold">
+opacity:1;
 
-                            Register
+transform:translateY(0);
 
-                        </a>
+}
 
-                    </p>
+}
 
-                </div>
+
+
+.login-logo{
+
+    width:85px;
+
+    height:85px;
+
+    background:#5C7C5C;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:38px;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+}
+
+.login-title{
+
+    font-size:40px;
+
+    font-weight:800;
+
+    color:#31473A;
+
+}
+
+.login-text{
+
+    color:#777;
+
+    font-size:17px;
+
+    margin-top:10px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+.form-label{
+
+    font-weight:600;
+
+    color:#31473A;
+
+    margin-bottom:8px;
+
+}
+
+.form-control{
+
+    height:58px;
+
+    border-radius:15px;
+
+    border:1px solid #d8d8d8;
+
+    padding:15px 18px;
+
+    transition:.3s;
+
+}
+
+.form-control:focus{
+
+    border-color:#5C7C5C;
+
+    box-shadow:0 0 0 .2rem rgba(92,124,92,.15);
+
+}
+
+
+
+.btn-login{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:linear-gradient(135deg,#5C7C5C,#31473A);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.btn-login:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.18);
+
+    color:white;
+
+}
+
+
+.alert{
+
+    border-radius:15px;
+
+}
+
+
+
+.register-link{
+
+    color:#5C7C5C;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+.register-link:hover{
+
+    color:#31473A;
+
+}
+
+hr{
+
+    margin:30px 0;
+
+}
+
+</style>
+
+<section class="login-page">
+
+    <div class="login-card">
+
+        <div class="text-center">
+
+            <div class="login-logo">
+
+                <i class="bi bi-person-circle"></i>
 
             </div>
+
+            <h1 class="login-title">
+
+                Welcome Back
+
+            </h1>
+
+            <p class="login-text">
+
+                Login to your Smart Community Hub account
+                and continue making your community better.
+
+            </p>
+
+        </div>
+
+        {% if error %}
+
+        <div class="alert alert-danger">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-4">
+
+                <label class="form-label">
+
+                    Username
+
+                </label>
+
+                <input
+
+                    type="text"
+
+                    name="username"
+
+                    class="form-control"
+
+                    placeholder="Enter your username"
+
+                    required>
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="form-label">
+
+                    Password
+
+                </label>
+
+                <input
+
+                    type="password"
+
+                    name="password"
+
+                    class="form-control"
+
+                    placeholder="Enter your password"
+
+                    required>
+
+            </div>
+
+            <button type="submit" class="btn-login">
+
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                Login
+
+            </button>
+
+        </form>
+
+        <hr>
+
+        <div class="text-center">
+
+            <p class="mb-0">
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}" class="register-link">
+
+                    Create One
+
+                </a>
+
+            </p>
 
         </div>
 
     </div>
 
-</div>
+</section>
 
 {% endblock %}

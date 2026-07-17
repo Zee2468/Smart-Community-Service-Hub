@@ -2,79 +2,286 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
+<style>
 
-    <div class="col-md-6">
+.register-page{
 
-        <div class="card shadow-lg border-0 rounded-4">
+    min-height:100vh;
 
-            <div class="card-body p-5">
+    display:flex;
 
-                <div class="text-center mb-4">
-                    <h2 class="fw-bold text-primary">
-                        Create Account
-                    </h2>
+    justify-content:center;
 
-                    <p class="text-muted">
-                        Join Smart Community Hub today
-                    </p>
+    align-items:center;
+
+    padding:80px 20px;
+
+    background:
+    linear-gradient(rgba(35,45,40,.75),
+    rgba(35,45,40,.75)),
+    url("/media/images/ravaged-roadway-scene-of-severe-pavement-damage-photo.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+}
+
+
+
+.register-card{
+
+    width:100%;
+
+    max-width:650px;
+
+    background:rgba(255,255,255,.96);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:30px;
+
+    padding:50px;
+
+    box-shadow:0 25px 60px rgba(0,0,0,.20);
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+
+.register-title{
+
+    font-size:42px;
+
+    font-weight:800;
+
+    color:#31473A;
+
+}
+
+.register-text{
+
+    color:#666;
+
+    margin-top:10px;
+
+    margin-bottom:35px;
+
+    font-size:17px;
+
+}
+
+
+
+.form-label{
+
+    font-weight:600;
+
+    color:#31473A;
+
+    margin-bottom:8px;
+
+}
+
+.form-control{
+
+    height:55px;
+
+    border-radius:15px;
+
+    border:1px solid #d8d8d8;
+
+    padding:15px;
+
+    transition:.3s;
+
+}
+
+.form-control:focus{
+
+    border-color:#5C7C5C;
+
+    box-shadow:0 0 0 .2rem rgba(92,124,92,.15);
+
+}
+
+
+
+.btn-register{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:linear-gradient(135deg,#5C7C5C,#31473A);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.btn-register:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.18);
+
+}
+
+
+
+.login-link{
+
+    color:#5C7C5C;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+.login-link:hover{
+
+    color:#31473A;
+
+}
+
+.helptext{
+
+    display:block;
+
+    color:#888;
+
+    margin-top:6px;
+
+    font-size:13px;
+
+}
+
+.errorlist{
+
+    list-style:none;
+
+    padding:0;
+
+    margin-top:6px;
+
+    color:#dc3545;
+
+    font-size:14px;
+
+}
+
+</style>
+
+<section class="register-page">
+
+    <div class="register-card">
+
+        <div class="text-center">
+
+            <h1 class="register-title">
+
+                Create Account
+
+            </h1>
+
+            <p class="register-text">
+
+                Join Smart Community Hub and help build smarter,
+                safer and stronger communities.
+
+            </p>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        {{ field.label }}
+
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+
+                        <small class="helptext">
+
+                            {{ field.help_text }}
+
+                        </small>
+
+                    {% endif %}
+
+                    {{ field.errors }}
+
                 </div>
 
-                <form method="POST">
+            {% endfor %}
 
-                    {% csrf_token %}
+            <button class="btn-register">
 
-                    {% for field in form %}
-                        <div class="mb-4">
+                Create Account
 
-                            <label class="form-label fw-semibold">
-                                {{ field.label }}
-                            </label>
+            </button>
 
-                            {{ field }}
+        </form>
 
-                            {% if field.help_text %}
-                                <small class="text-muted d-block mt-2">
-                                    {{ field.help_text }}
-                                </small>
-                            {% endif %}
+        <hr class="my-4">
 
-                            {% for error in field.errors %}
-                                <small class="text-danger">
-                                    {{ error }}
-                                </small>
-                            {% endfor %}
+        <div class="text-center">
 
-                        </div>
-                    {% endfor %}
+            Already have an account?
 
-                    <div class="d-grid">
-                        <button class="btn btn-primary btn-lg rounded-3">
-                            Register
-                        </button>
-                    </div>
+            <a href="/accounts/login/" class="login-link">
 
-                </form>
+                Sign In
 
-                <hr>
-
-                <div class="text-center">
-                    <p class="mb-0">
-                        Already have an account?
-
-                        <a href="/accounts/login/"
-                           class="text-decoration-none fw-bold">
-                            Login
-                        </a>
-                    </p>
-                </div>
-
-            </div>
+            </a>
 
         </div>
 
     </div>
 
-</div>
+</section>
 
 {% endblock %}

@@ -1,0 +1,738 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+
+<section class="about-hero">
+
+    <div class="hero-slideshow">
+
+        <img src="/media/images/ravaged-roadway-scene-of-severe-pavement-damage-photo.jpg" class="slide active">
+
+        <img src="/media/images/road-with-crack-middle-generative-ai_1036445-6549.avif" class="slide">
+
+        <img src="/media/images/water-gushes-rusty-metal-pipe-break-pipeline-accident-industrial-emergency-stream-leaks-damaged-old-plumbing-system-pollution-385656164.webp" class="slide">
+
+        <img src="/media/images/illegal-waste-in-Durban.webp" class="slide">
+
+        <img src="/media/images/low-angle-view-of-a-severed-wooden-utility-pole-tangled-with-overhead-electric-supply-wires-in-the-aftermath-of-storm-that-cuts-village-power-supply-2JBDG36.jpg" class="slide">
+
+        <img src="/media/images/valleypivotelctricalwirespans-9.jpg" class="slide">
+
+    </div>
+
+    <div class="hero-overlay">
+
+        <div class="container text-center">
+
+            <h1 class="display-3 fw-bold">
+
+                About Smart Community Hub
+
+            </h1>
+
+            <p class="lead">
+
+                Transforming Communities Through Technology,
+                Transparency and Collaboration.
+
+            </p>
+
+            <a href="{% url 'register' %}" class="btn hero-btn">
+
+                Join Our Community
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= OUR STORY ================= -->
+
+<section class="story-section py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h6 class="section-title">
+                OUR STORY
+            </h6>
+
+            <h2 class="fw-bold">
+                Why Smart Community Hub?
+            </h2>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-10 mx-auto">
+
+                <p class="lead text-center">
+
+                    Every community deserves a simple and reliable way to communicate with local authorities.
+
+                    Unfortunately, many service delivery issues are reported late, updates are difficult to track, and valuable community opportunities often fail to reach residents.
+
+                    Smart Community Hub was created to bridge this gap by providing one digital platform where residents can report issues, receive updates, access opportunities, and actively contribute to building stronger communities.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= VALUES ================= -->
+
+<section class="values-section py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <div class="orbit-container">
+
+                    <div class="orbit">
+
+                        <h2 class="center-title">
+                            OUR<br>VALUES
+                        </h2>
+
+                        <div class="value value1 blue">
+                            Transparency
+                        </div>
+
+                        <div class="value value2 green">
+                            Innovation
+                        </div>
+
+                        <div class="value value3 purple">
+                            Community
+                        </div>
+
+                        <div class="value value4 orange">
+                            Accountability
+                        </div>
+
+                        <div class="value value5 red">
+                            Accessibility
+                        </div>
+
+                        <div class="value value6 teal">
+                            Empowerment
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <h6 class="section-title">
+
+                    OUR CORE VALUES
+
+                </h6>
+
+                <h2 class="fw-bold mb-4">
+
+                    The Principles That Guide Us
+
+                </h2>
+
+                <p>
+
+Every feature within Smart Community Hub is designed to promote transparency, encourage community participation, and improve communication between residents and local authorities.
+
+By combining technology with collaboration, we aim to make service delivery more efficient while creating opportunities that improve everyday life.
+
+                </p>
+
+                <p>
+
+                    We believe technology should connect people, simplify service delivery and create opportunities that improve everyday lives.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+
+body{
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+    font-family:'Poppins',sans-serif;
+}
+
+.about-hero{
+
+    position:relative;
+
+    height:70vh;
+
+    overflow:hidden;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.hero-slideshow{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    left:0;
+
+    top:0;
+
+}
+
+.slide{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    opacity:0;
+
+    transition:opacity 1.5s ease-in-out;
+
+}
+
+.slide.active{
+
+    opacity:1;
+
+}
+
+.hero-overlay{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(25,35,30,.65);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    z-index:10;
+
+}
+
+.about-hero h1{
+
+    font-size:64px;
+
+    font-weight:800;
+
+}
+
+.about-hero p{
+
+    max-width:720px;
+
+    margin:auto;
+
+    margin-top:20px;
+
+    font-size:21px;
+
+    line-height:1.8;
+
+    color:#f5f5f5;
+
+}
+
+.hero-btn{
+
+    margin-top:30px;
+
+    background:#5c7c5c;
+
+    color:white;
+
+    padding:15px 42px;
+
+    border-radius:50px;
+
+    font-weight:600;
+
+    transition:.4s;
+
+}
+
+.hero-btn:hover{
+
+    background:#476347;
+
+    color:white;
+
+}
+
+
+
+.section-title{
+    color:#1e88e5;
+    letter-spacing:2px;
+    font-weight:700;
+}
+
+
+
+.founder-image{
+    border-radius:25px;
+    transition:.5s;
+}
+
+.founder-image:hover{
+    transform:scale(1.03);
+}
+
+
+.story-section{
+    background:#f8fbff;
+}
+
+
+.mission-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:.4s;
+
+    height:100%;
+
+}
+
+.mission-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+.mission-card i{
+
+    font-size:65px;
+
+    color:#1e88e5;
+
+    margin-bottom:20px;
+
+}
+
+
+.values-section{
+
+    background:#eef6ff;
+
+}
+
+.orbit-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:600px;
+
+}
+
+.orbit{
+
+    position:relative;
+
+    width:450px;
+
+    height:450px;
+
+    animation:rotateOrbit 28s linear infinite;
+
+}
+
+.orbit:hover{
+
+    animation-play-state:paused;
+
+}
+
+.center-title{
+
+    position:absolute;
+
+    top:50%;
+
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    color:#0d47a1;
+
+    font-size:42px;
+
+    font-weight:900;
+
+    text-align:center;
+
+    line-height:1.1;
+
+}
+
+
+.value{
+
+    position:absolute;
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    color:white;
+
+    font-weight:600;
+
+    padding:18px;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.15);
+
+    transition:.4s;
+
+    animation:counterRotate 28s linear infinite;
+
+}
+
+.orbit:hover .value{
+
+    animation-play-state:paused;
+
+}
+
+.value:hover{
+
+    transform:scale(1.18);
+
+    cursor:pointer;
+
+}
+
+
+.blue{
+
+    background:#1565c0;
+
+}
+
+.green{
+
+    background:#2e7d32;
+
+}
+
+.purple{
+
+    background:#7b1fa2;
+
+}
+
+.orange{
+
+    background:#ef6c00;
+
+}
+
+.red{
+
+    background:#c62828;
+
+}
+
+.teal{
+
+    background:#00897b;
+
+}
+
+.value1{
+
+    top:-20px;
+
+    left:165px;
+
+}
+
+.value2{
+
+    top:70px;
+
+    right:-20px;
+
+}
+
+.value3{
+
+    bottom:70px;
+
+    right:-20px;
+
+}
+
+.value4{
+
+    bottom:-20px;
+
+    left:165px;
+
+}
+
+.value5{
+
+    bottom:70px;
+
+    left:-20px;
+
+}
+
+.value6{
+
+    top:70px;
+
+    left:-20px;
+
+}
+
+@keyframes rotateOrbit{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+@keyframes counterRotate{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(-360deg);
+
+    }
+
+}
+
+.stats-section{
+
+    background:linear-gradient(135deg,#1565c0,#26a69a);
+
+    color:white;
+
+}
+
+.stats-section h2{
+
+    font-size:55px;
+
+    font-weight:800;
+
+}
+
+.stats-section p{
+
+    font-size:18px;
+
+}
+
+
+.feature-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    transition:.4s;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+
+    height:100%;
+
+}
+
+.feature-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 20px 45px rgba(0,0,0,.15);
+
+}
+
+.feature-card i{
+
+    font-size:60px;
+
+    color:#1565c0;
+
+    margin-bottom:20px;
+
+}
+
+
+.cta-card{
+
+    background:linear-gradient(135deg,#1565c0,#00acc1);
+
+    color:white;
+
+    border-radius:25px;
+
+    padding:70px;
+
+    text-align:center;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.18);
+
+}
+
+.cta-card .btn{
+
+    border-radius:50px;
+
+    padding:15px 45px;
+
+    font-weight:600;
+
+}
+
+
+@media(max-width:991px){
+
+.orbit{
+
+width:320px;
+
+height:320px;
+
+}
+
+.value{
+
+width:85px;
+
+height:85px;
+
+font-size:12px;
+
+padding:8px;
+
+}
+
+.center-title{
+
+font-size:30px;
+
+}
+
+.about-hero{
+
+height:55vh;
+
+}
+
+.about-hero h1{
+
+font-size:40px;
+
+}
+
+.cta-card{
+
+padding:45px 25px;
+
+}
+
+.stats-section h2{
+
+font-size:38px;
+
+}
+
+}
+</style>
+
+{% endblock %}

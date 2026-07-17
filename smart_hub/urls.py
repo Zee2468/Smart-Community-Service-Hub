@@ -3,31 +3,28 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
 
-    # Django Admin
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 
-    # Home Dashboard
-    path('', include('dashboard.urls')),
+    path("", include("dashboard.urls")),
 
-    # Accounts
-    path('accounts/', include('accounts.urls')),
+    path("accounts/", include("accounts.urls")),
 
-    # Community Issues
-    path('issues/', include('issues.urls')),
+    path("issues/", include("issues.urls")),
 
-    # Community Events
-    path('events/', include('events.urls')),
+    path("events/", include("events.urls")),
 
-    # Notifications
-    path('notifications/', include('notifications.urls')),
+    path("notifications/", include("notifications.urls")),
 
-    path('opportunities/', include('opportunities.urls')),
+    path("opportunities/", include("opportunities.urls")),
+
+    path("admin-portal/", include("admin_portal.urls")),
 
 ]
 
-# Serve uploaded media files during development
+
 if settings.DEBUG:
 
     urlpatterns += static(
@@ -35,7 +32,6 @@ if settings.DEBUG:
         document_root=settings.MEDIA_ROOT
     )
 
-    # Optional: serve static files during development
     urlpatterns += static(
         settings.STATIC_URL,
         document_root=settings.STATIC_ROOT
