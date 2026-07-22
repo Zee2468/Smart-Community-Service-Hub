@@ -8,11 +8,6 @@ from notifications.models import Notification
 from events.models import Event
 from opportunities.models import Opportunity
 
-
-# ==========================================
-# HOME PAGE
-# ==========================================
-
 def home(request):
 
     unread_notifications = 0
@@ -44,9 +39,6 @@ def home(request):
     )
 
 
-# ==========================================
-# ADMIN DASHBOARD
-# ==========================================
 
 @staff_member_required
 def admin_dashboard(request):
@@ -86,9 +78,6 @@ def admin_dashboard(request):
     )
 
 
-# ==========================================
-# SERVICES PAGE
-# ==========================================
 
 def services(request):
 
@@ -96,11 +85,6 @@ def services(request):
         request,
         "dashboard/services.html"
     )
-
-
-# ==========================================
-# CONTACT PAGE
-# ==========================================
 
 def contact(request):
 

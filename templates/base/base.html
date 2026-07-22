@@ -82,6 +82,14 @@
 
 }
 
+#navbar-wrapper{
+    transition:.4s;
+}
+
+#navbar-wrapper.active{
+    margin-left:270px;
+}
+
 #menu-btn{
 
     border:none;
@@ -820,11 +828,57 @@
 <body>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+<div id="navbar-wrapper">
 
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
 
-        <!-- Logo -->
+        {% if user.is_authenticated %}
+
+        <!-- ================= DASHBOARD NAVBAR ================= -->
+
+        <button id="menu-btn"
+                class="btn btn-light border rounded-circle me-3">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+
+        <a class="navbar-brand d-flex align-items-center"
+           href="{% url 'dashboard' %}">
+            <i class="bi bi-buildings-fill text-primary fs-2 me-2"></i>
+            <span class="fw-bold text-primary">
+                Smart Community Hub
+            </span>
+        </a>
+
+        <div class="ms-auto d-flex align-items-center">
+
+            <!-- Notification -->
+
+            <a href="{% url 'notifications' %}"
+               class="position-relative me-4 text-dark">
+
+                <i class="bi bi-bell-fill fs-4"></i>
+
+                {% if unread_notifications > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ unread_notifications }}
+                </span>
+                {% endif %}
+
+            </a>
+
+            <!-- User -->
+
+            <span class="fw-bold">
+                <i class="bi bi-person-circle text-primary"></i>
+                {{ user.username }}
+            </span>
+
+        </div>
+
+        {% else %}
+
+        <!-- ================= PUBLIC NAVBAR ================= -->
 
         <a class="navbar-brand d-flex align-items-center"
            href="{% url 'home' %}">
@@ -832,9 +886,7 @@
             <i class="bi bi-buildings-fill text-primary fs-2 me-2"></i>
 
             <span class="fw-bold text-primary">
-
                 Smart Community Hub
-
             </span>
 
         </a>
@@ -851,100 +903,33 @@
         <div class="collapse navbar-collapse"
              id="mainNavbar">
 
-            <!-- Center Navigation -->
-
             <ul class="navbar-nav mx-auto">
 
                 <li class="nav-item">
-
-                    <a class="nav-link active"
-                       href="{% url 'home' %}">
-
+                    <a class="nav-link" href="{% url 'home' %}">
                         Home
-
                     </a>
-
                 </li>
 
                 <li class="nav-item">
-
                     <a class="nav-link" href="{% url 'about' %}">
-    About Us
-</a>
-
+                        About Us
+                    </a>
                 </li>
 
-               <li class="nav-item">
-
-    <a class="nav-link"
-       href="{% url 'services' %}">
-
-        Our Services
-
-    </a>
-
-</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">
+                        Our Services
+                    </a>
+                </li>
 
                 <li class="nav-item">
-
-                    <a class="nav-link"
-   href="{% url 'contact' %}">
-
-    Contact Us
-
-</a>
-
+                    <a class="nav-link" href="{% url 'contact' %}">
+                        Contact Us
+                    </a>
                 </li>
 
             </ul>
-
-            <!-- Right Side -->
-
-            {% if user.is_authenticated %}
-
-            <div class="d-flex align-items-center">
-
-                <!-- Sidebar Button -->
-
-                <button id="menu-btn"
-                        class="btn btn-light border rounded-circle me-3">
-
-                    <i class="bi bi-list fs-4"></i>
-
-                </button>
-
-                <!-- Notifications -->
-
-                <a href="{% url 'notifications' %}"
-                   class="position-relative me-4 text-dark">
-
-                    <i class="bi bi-bell-fill fs-4"></i>
-
-                    {% if unread_notifications > 0 %}
-
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-
-                        {{ unread_notifications }}
-
-                    </span>
-
-                    {% endif %}
-
-                </a>
-
-                <!-- Profile -->
-
-                <span class="fw-bold">
-
-                    <i class="bi bi-person-circle text-primary"></i>
-
-                    {{ user.username }}
-
-                </span>
-
-            </div>
-
-            {% else %}
 
             <div>
 
@@ -964,14 +949,13 @@
 
             </div>
 
-            {% endif %}
-
         </div>
 
+        {% endif %}
+
     </div>
-
 </nav>
-
+</div>
 
 
 {% if user.is_authenticated %}
@@ -1001,7 +985,7 @@
 
     </div>
 
-    <a href="{% url 'home' %}">
+    <a href="{% url 'dashboard' %}">
 
         <i class="bi bi-house-door-fill"></i>
 
@@ -1111,13 +1095,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const menuBtn = document.getElementById("menu-btn");
     const sidebar = document.getElementById("sidebar");
     const content = document.getElementById("content");
+    const navbar = document.getElementById("navbar-wrapper");
 
-    if(menuBtn && sidebar && content){
+    if(menuBtn){
 
         menuBtn.addEventListener("click", function(){
 
             sidebar.classList.toggle("active");
             content.classList.toggle("active");
+
+            if(navbar){
+                navbar.classList.toggle("active");
+            }
 
         });
 

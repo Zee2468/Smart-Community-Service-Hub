@@ -1,165 +1,382 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="container py-5">
+<style>
 
-    <div class="card shadow-lg border-0 rounded-4">
+.profile-section{
+    padding:80px 0;
+    background:#f5f7fb;
+    min-height:80vh;
+}
 
-        <div class="card-body p-5">
+.profile-card{
+    background:#fff;
+    border:none;
+    border-radius:20px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+    overflow:hidden;
+}
 
-            <div class="text-center mb-5">
+.profile-header{
+    background:linear-gradient(135deg,#0d6efd,#4f46e5);
+    color:white;
+    padding:60px 30px;
+    text-align:center;
+}
 
-                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center"
-                     style="width:100px;height:100px;font-size:40px;">
+.profile-avatar{
 
-                    {{ user.username|first|upper }}
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    background:white;
+    color:#0d6efd;
 
-                </div>
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-                <h2 class="mt-3 fw-bold">
-                    {{ user.username }}
-                </h2>
+    margin:auto;
 
-                <p class="text-muted">
-                    Smart Community Hub Member
-                </p>
+    font-size:60px;
+    font-weight:bold;
 
-            </div>
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
 
-            <div class="row mb-5">
+}
 
-                <div class="col-md-6">
+.profile-header h2{
 
-                    <h5 class="fw-bold text-primary">
-                        Account Information
-                    </h5>
+    margin-top:25px;
+    font-weight:bold;
 
-                    <hr>
+}
 
-                    <p>
-                        <strong>Username:</strong>
-                        {{ user.username }}
-                    </p>
+.profile-header p{
 
-                    <p>
-                        <strong>Email:</strong>
+    opacity:.9;
+    font-size:18px;
 
-                        {% if user.email %}
-                            {{ user.email }}
-                        {% else %}
-                            Not provided
-                        {% endif %}
+}
 
-                    </p>
+.info-card{
 
-                    <p>
-                        <strong>Date Joined:</strong>
-                        {{ user.date_joined|date:"d M Y" }}
-                    </p>
+    background:#fff;
+    border-radius:15px;
+    padding:30px;
+    height:100%;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
 
-                </div>
+}
 
-                <div class="col-md-6 text-md-end mt-4 mt-md-0">
+.info-title{
 
-                    <a href="{% url 'issue-list' %}" class="btn btn-primary me-2">
-                        View My Issues
-                    </a>
+    color:#0d6efd;
+    font-weight:bold;
+    margin-bottom:20px;
 
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">
-                        Logout
-                    </a>
+}
 
-                </div>
+.info-item{
 
-            </div>
+    margin-bottom:18px;
+    font-size:17px;
 
-            <h4 class="fw-bold text-primary mb-4">
+}
 
-                My Dashboard
+.info-item strong{
 
-            </h4>
+    color:#333;
 
-            <div class="row">
+}
 
-                <div class="col-md-6 col-lg-3 mb-4">
+.action-btn{
 
-                    <div class="card stats-card shadow border-0 text-center p-4">
+    height:55px;
+    font-weight:600;
+    border-radius:12px;
 
-                        <h1>📢</h1>
+}
 
-                        <h6 class="text-muted">
-                            Total Issues
-                        </h6>
+.quick-card{
 
-                        <h2 class="text-primary fw-bold">
-                            {{ total_issues }}
-                        </h2>
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    text-align:center;
+    transition:.3s;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
 
-                    </div>
+}
 
-                </div>
+.quick-card:hover{
 
-                <div class="col-md-6 col-lg-3 mb-4">
+    transform:translateY(-8px);
+    box-shadow:0 15px 30px rgba(0,0,0,.12);
 
-                    <div class="card stats-card shadow border-0 text-center p-4">
+}
 
-                        <h1>🟡</h1>
+.quick-card i{
 
-                        <h6 class="text-muted">
-                            Pending
-                        </h6>
+    font-size:50px;
+    color:#0d6efd;
+    margin-bottom:15px;
 
-                        <h2 class="text-warning fw-bold">
-                            {{ pending }}
-                        </h2>
+}
 
-                    </div>
+.quick-card h5{
 
-                </div>
+    font-weight:bold;
 
-                <div class="col-md-6 col-lg-3 mb-4">
+}
 
-                    <div class="card stats-card shadow border-0 text-center p-4">
+</style>
 
-                        <h1>🔵</h1>
 
-                        <h6 class="text-muted">
-                            In Progress
-                        </h6>
+<section class="profile-section">
 
-                        <h2 class="text-primary fw-bold">
-                            {{ in_progress }}
-                        </h2>
+<div class="container">
 
-                    </div>
+<div class="card profile-card">
 
-                </div>
+<!-- Profile Header -->
 
-                <div class="col-md-6 col-lg-3 mb-4">
+<div class="profile-header">
 
-                    <div class="card stats-card shadow border-0 text-center p-4">
+<div class="profile-avatar">
 
-                        <h1>🟢</h1>
-
-                        <h6 class="text-muted">
-                            Resolved
-                        </h6>
-
-                        <h2 class="text-success fw-bold">
-                            {{ resolved }}
-                        </h2>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+{{ user.username|first|upper }}
 
 </div>
+
+<h2>
+
+{{ user.username }}
+
+</h2>
+
+<p>
+
+Welcome back to Smart Community Hub
+
+</p>
+
+</div>
+
+
+<!-- Body -->
+
+<div class="card-body p-5">
+
+<div class="row g-4">
+
+<!-- Left -->
+
+<div class="col-lg-6">
+
+<div class="info-card">
+
+<h4 class="info-title">
+
+<i class="bi bi-person-circle"></i>
+
+Account Information
+
+</h4>
+
+<hr>
+
+<div class="info-item">
+
+<strong>Username:</strong>
+
+{{ user.username }}
+
+</div>
+
+<div class="info-item">
+
+<strong>Email:</strong>
+
+{% if user.email %}
+
+{{ user.email }}
+
+{% else %}
+
+Not Provided
+
+{% endif %}
+
+</div>
+
+<div class="info-item">
+
+<strong>Date Joined:</strong>
+
+{{ user.date_joined|date:"d F Y" }}
+
+</div>
+
+<div class="info-item">
+
+<strong>Status:</strong>
+
+Active Member
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Right -->
+
+<div class="col-lg-6">
+
+<div class="info-card">
+
+<h4 class="info-title">
+
+<i class="bi bi-lightning-charge-fill"></i>
+
+Quick Actions
+
+</h4>
+
+<hr>
+
+<div class="d-grid gap-3">
+
+<a href="#"
+
+class="btn btn-primary action-btn">
+
+<i class="bi bi-pencil-square me-2"></i>
+
+Edit Profile
+
+</a>
+
+<a href="{% url 'issue-list' %}"
+
+class="btn btn-success action-btn">
+
+<i class="bi bi-list-check me-2"></i>
+
+View My Issues
+
+</a>
+
+<a href="{% url 'report-issue' %}"
+
+class="btn btn-warning action-btn">
+
+<i class="bi bi-plus-circle me-2"></i>
+
+Report New Issue
+
+</a>
+
+<a href="{% url 'logout' %}"
+
+class="btn btn-outline-danger action-btn">
+
+<i class="bi bi-box-arrow-right me-2"></i>
+
+Logout
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Bottom Cards -->
+
+<div class="row mt-5 g-4">
+
+<div class="col-md-4">
+
+<div class="quick-card">
+
+<i class="bi bi-exclamation-circle-fill"></i>
+
+<h5>
+
+Community Issues
+
+</h5>
+
+<p>
+
+View all the issues you have submitted and track their progress.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="quick-card">
+
+<i class="bi bi-calendar-event-fill"></i>
+
+<h5>
+
+Events
+
+</h5>
+
+<p>
+
+Stay informed about upcoming community meetings and activities.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="quick-card">
+
+<i class="bi bi-briefcase-fill"></i>
+
+<h5>
+
+Opportunities
+
+</h5>
+
+<p>
+
+Explore jobs, internships, bursaries and other community opportunities.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
 
 {% endblock %}

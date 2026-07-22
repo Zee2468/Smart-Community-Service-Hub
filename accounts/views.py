@@ -9,7 +9,7 @@ from issues.models import Issue
 def register(request):
 
     if request.user.is_authenticated:
-        return redirect('profile')
+        return redirect('dashboard')
 
     form = RegisterForm()
 
@@ -33,7 +33,7 @@ def register(request):
 def login_user(request):
 
     if request.user.is_authenticated:
-        return redirect("profile")
+        return redirect("dashboard")
 
     error = None
 
@@ -52,7 +52,7 @@ def login_user(request):
 
             login(request, user)
 
-            return redirect("profile")
+            return redirect("dashboard")
 
         else:
             error = "Invalid username or password."
@@ -64,7 +64,51 @@ def login_user(request):
             "error": error
         }
     )
+@login_required
+def dashboard(request):
 
+    total_issues = Issue.objects.filter(
+        user=request.user
+    ).count()
+
+    pending = Issue.objects.filter(
+        user=request.user,
+        status="Pending"
+    ).count()
+
+    in_progress = Issue.objects.filter(
+        user=request.user,
+        status="In Progress"
+    ).count()
+
+    resolved = Issue.objects.filter(
+        user=request.user,
+        status="Resolved"
+    ).count()
+
+    recent_issues = Issue.objects.filter(
+        user=request.user
+    ).order_by("-created_at")[:5]
+
+    context = {
+
+        "total_issues": total_issues,
+
+        "pending": pending,
+
+        "in_progress": in_progress,
+
+        "resolved": resolved,
+
+        "recent_issues": recent_issues,
+
+    }
+
+    return render(
+        request,
+        "accounts/dashboard.html",
+        context
+    )
 
 @login_required
 def profile(request):
