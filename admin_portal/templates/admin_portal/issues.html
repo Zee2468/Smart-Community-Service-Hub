@@ -1,0 +1,13 @@
+{% extends "base/base.html" %}
+{% block title %}Manage reports | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="mb-4"><span class="text-uppercase fw-bold small text-success">Administration</span><h1 class="h2 fw-bold mt-1 mb-1">Manage community reports</h1><p class="text-secondary mb-0">Review submissions and update the status residents see in their portal.</p></div>
+    <form method="get" class="card card-body mb-3"><div class="row g-2"><div class="col-md-6"><input class="form-control" type="search" name="search" value="{{ search }}" placeholder="Search title, location or resident"></div><div class="col-md-4"><select class="form-select" name="status"><option value="">All statuses</option>{% for value,label in statuses %}<option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div><div class="col-md-2 d-grid"><button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Filter</button></div></div></form>
+    <section class="card"><div class="table-responsive"><table class="table align-middle mb-0"><thead class="table-light"><tr><th class="ps-4">Report</th><th>Resident</th><th>Category</th><th>Submitted</th><th style="min-width:240px">Update status</th></tr></thead><tbody>
+    {% for issue in reports %}
+        <tr><td class="ps-4"><div class="fw-semibold">{{ issue.title }}</div><small class="text-secondary">{{ issue.location }}</small><div class="small text-secondary mt-1">{{ issue.description|truncatechars:110 }}</div>{% if issue.image %}<a href="{{ issue.image.url }}" target="_blank" rel="noopener">View attached photo</a>{% endif %}</td><td>{{ issue.user.username }}<br><small class="text-secondary">{{ issue.user.email|default:"No email provided" }}</small></td><td>{{ issue.category }}</td><td>{{ issue.created_at|date:"d M Y, H:i" }}</td><td><form method="post" action="{% url 'admin-update-issue-status' issue.pk %}" class="d-flex gap-2">{% csrf_token %}<select class="form-select form-select-sm" name="status" aria-label="Status for {{ issue.title }}">{% for value,label in statuses %}<option value="{{ value }}" {% if issue.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button type="submit" class="btn btn-sm btn-primary">Save</button></form><span class="badge mt-2 {% if issue.status == 'Resolved' %}text-bg-success{% elif issue.status == 'In Progress' %}text-bg-primary{% else %}text-bg-warning{% endif %}">{{ issue.status }}</span></td></tr>
+    {% empty %}<tr><td colspan="5" class="text-center text-secondary py-5">No reports match your filters.</td></tr>{% endfor %}
+    </tbody></table></div></section>
+</div>
+{% endblock %}

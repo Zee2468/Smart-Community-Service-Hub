@@ -1,0 +1,437 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    
+    <div class="mb-5">
+
+        <h1 class="fw-bold text-primary">
+             Dashboard
+        </h1>
+
+        <p class="text-muted">
+            Welcome back {{ request.user.username }}. Here's an overview of your community reports.
+        </p>
+
+    </div>
+
+    <div class="row">
+
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a href="/issues/" class="text-decoration-none">
+
+                <div class="card stats-card shadow border-0 text-center">
+
+                    <div class="card-body">
+
+                        <h1 class="display-5">
+                            
+                        </h1>
+
+                        <h6 class="text-muted">
+                            Total Issues
+                        </h6>
+
+                        <h2 class="fw-bold text-primary">
+                            {{ total_issues }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+      
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a href="/issues/?status=Pending" class="text-decoration-none">
+
+                <div class="card stats-card shadow border-0 text-center">
+
+                    <div class="card-body">
+
+                        <h1 class="display-5">
+                            
+                        </h1>
+
+                        <h6 class="text-muted">
+                            Pending
+                        </h6>
+
+                        <h2 class="fw-bold text-warning">
+                            {{ pending }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+       
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a href="/issues/?status=In Progress" class="text-decoration-none">
+
+                <div class="card stats-card shadow border-0 text-center">
+
+                    <div class="card-body">
+
+                        <h1 class="display-5">
+                            
+                        </h1>
+
+                        <h6 class="text-muted">
+                            In Progress
+                        </h6>
+
+                        <h2 class="fw-bold text-primary">
+                            {{ in_progress }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3 mb-4">
+
+            <a href="/issues/?status=Resolved" class="text-decoration-none">
+
+                <div class="card stats-card shadow border-0 text-center">
+
+                    <div class="card-body">
+
+                        <h1 class="display-5">
+                            
+                        </h1>
+
+                        <h6 class="text-muted">
+                            Resolved
+                        </h6>
+
+                        <h2 class="fw-bold text-success">
+                            {{ resolved }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+   
+    <div class="row mt-4">
+
+    
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <h4 class="text-primary mb-4">
+                        Issue Status Overview
+                    </h4>
+
+                    <canvas id="barChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <h4 class="text-primary mb-4">
+                        Issue Distribution
+                    </h4>
+
+                    <canvas id="pieChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+   
+    <div class="card shadow border-0 mb-5">
+
+        <div class="card-body">
+
+            <h4 class="text-primary mb-4">
+
+                Quick Actions
+
+            </h4>
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+
+                    <a href="/issues/report/"
+                       class="btn btn-primary w-100 p-3">
+
+                        Report Issue
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <a href="/issues/"
+                       class="btn btn-success w-100 p-3">
+
+                        View Issues
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <a href="/"
+                       class="btn btn-warning w-100 p-3">
+
+                        Home
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4 class="mb-0">
+
+                Recent Issues
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if recent_issues %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Title</th>
+
+                            <th>Category</th>
+
+                            <th>Status</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for issue in recent_issues %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ issue.title }}
+
+                            </td>
+
+                            <td>
+
+                                {{ issue.category }}
+
+                            </td>
+
+                            <td>
+
+                                {% if issue.status == "Pending" %}
+
+                                    <span class="badge bg-warning">
+
+                                        Pending
+
+                                    </span>
+
+                                {% elif issue.status == "In Progress" %}
+
+                                    <span class="badge bg-primary">
+
+                                        In Progress
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-success">
+
+                                        Resolved
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {{ issue.created_at|date:"d M Y" }}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <h5 class="text-muted">
+
+                    No issues reported yet.
+
+                </h5>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const labels = {{ chart_labels|safe }};
+const data = {{ chart_data|safe }};
+
+new Chart(document.getElementById('barChart'), {
+
+    type: 'bar',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            label: 'Issues',
+
+            data: data,
+
+            backgroundColor: [
+
+                '#ffc107',
+
+                '#0d6efd',
+
+                '#198754'
+
+            ],
+
+            borderRadius: 10
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        }
+
+    }
+
+});
+
+new Chart(document.getElementById('pieChart'), {
+
+    type: 'pie',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            data: data,
+
+            backgroundColor: [
+
+                '#ffc107',
+
+                '#0d6efd',
+
+                '#198754'
+
+            ]
+
+        }]
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

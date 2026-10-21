@@ -1,0 +1,583 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* =========================
+   ABOUT PAGE THEME
+========================= */
+.about-page {
+    --about-green: #198754;
+    --about-dark-green: #11643d;
+    --about-light: #eaf5ee;
+    --about-dark: #172b24;
+    --about-text: #58665f;
+    color: var(--about-dark);
+    overflow: hidden;
+}
+
+.about-page h2 {
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+
+.about-section-label {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 15px;
+    border-radius: 50px;
+    background: var(--about-light);
+    color: var(--about-green);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* =========================
+   HERO SLIDESHOW
+========================= */
+.about-hero {
+    position: relative;
+    height: min(650px, 75vh);
+    min-height: 440px;
+    overflow: hidden;
+    background: #10271d;
+}
+
+.about-hero .hero-slideshow,
+.about-hero .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.about-hero .slide {
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.4s ease-in-out;
+}
+
+.about-hero .slide.active {
+    opacity: 1;
+}
+
+.about-hero .hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    color: #fff;
+    text-align: center;
+    background: linear-gradient(
+        90deg,
+        rgba(7, 28, 18, 0.84),
+        rgba(7, 28, 18, 0.52)
+    );
+}
+
+.about-hero .hero-content {
+    max-width: 900px;
+    animation: aboutFadeUp 0.9s ease both;
+}
+
+.about-hero .hero-eyebrow {
+    display: inline-block;
+    padding: 9px 16px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50px;
+    background: rgba(255,255,255,0.1);
+    color: #d9f5e2;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.about-hero h1 {
+    margin-bottom: 20px;
+    font-size: clamp(36px, 5vw, 62px);
+    line-height: 1.12;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+}
+
+.about-hero p {
+    max-width: 720px;
+    margin: 0 auto;
+    color: #edf5ef;
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.8;
+}
+
+.about-hero .hero-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 14px 28px;
+    border: 1px solid var(--about-green);
+    border-radius: 9px;
+    background: var(--about-green);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.about-hero .hero-btn:hover {
+    transform: translateY(-3px);
+    background: var(--about-dark-green);
+    border-color: var(--about-dark-green);
+    color: #fff;
+}
+
+/* =========================
+   OUR STORY
+========================= */
+.story-section {
+    padding: 85px 0;
+    background: #fff;
+}
+
+.story-content {
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.story-content h2 {
+    margin-bottom: 25px;
+    font-size: clamp(28px, 4vw, 40px);
+}
+
+.story-content p {
+    color: var(--about-text);
+    font-size: 16px;
+    line-height: 1.95;
+    margin-bottom: 18px;
+}
+
+.story-highlight {
+    margin-top: 30px;
+    padding: 22px 26px;
+    border-left: 4px solid var(--about-green);
+    border-radius: 0 12px 12px 0;
+    background: #f5faf6;
+    color: var(--about-dark-green);
+    font-weight: 600;
+    line-height: 1.8;
+    text-align: left;
+}
+
+/* =========================
+   CORE VALUES
+========================= */
+.values-section {
+    padding: 85px 0 95px;
+    background: #f5f8f6;
+}
+
+.values-heading {
+    max-width: 720px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.values-heading h2 {
+    margin-bottom: 15px;
+    font-size: clamp(28px, 4vw, 40px);
+}
+
+.values-heading p {
+    color: var(--about-text);
+    line-height: 1.8;
+}
+
+.value-card {
+    height: 100%;
+    padding: 30px 25px;
+    border: 1px solid #e5eee7;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(22, 54, 38, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 35px rgba(22, 54, 38, 0.11);
+}
+
+.value-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    margin-bottom: 22px;
+    border-radius: 14px;
+    background: var(--about-light);
+    color: var(--about-green);
+    font-size: 25px;
+}
+
+.value-card h3 {
+    margin-bottom: 12px;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.value-card p {
+    margin-bottom: 0;
+    color: var(--about-text);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* =========================
+   CLOSING CTA
+========================= */
+.about-cta-section {
+    padding: 75px 0;
+    background: #fff;
+}
+
+.about-cta {
+    position: relative;
+    overflow: hidden;
+    padding: 55px 35px;
+    border-radius: 20px;
+    background: linear-gradient(120deg, #11643d, #198754);
+    color: #fff;
+    text-align: center;
+}
+
+.about-cta h2 {
+    margin-bottom: 16px;
+    font-size: clamp(27px, 4vw, 38px);
+}
+
+.about-cta p {
+    max-width: 650px;
+    margin: 0 auto 25px;
+    color: #e6f4ea;
+    line-height: 1.8;
+}
+
+.about-cta .btn {
+    padding: 13px 25px;
+    border-radius: 9px;
+    background: #fff;
+    color: var(--about-dark-green);
+    font-weight: 750;
+    transition: transform 0.25s ease;
+}
+
+.about-cta .btn:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+@keyframes aboutFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .about-hero {
+        height: 60vh;
+        min-height: 430px;
+    }
+
+    .about-hero h1 {
+        letter-spacing: -0.5px;
+    }
+
+    .story-section,
+    .values-section {
+        padding: 60px 0;
+    }
+
+    .value-card {
+        padding: 25px 20px;
+    }
+
+    .about-cta-section {
+        padding: 55px 0;
+    }
+
+    .about-cta {
+        padding: 40px 22px;
+        border-radius: 15px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-page *,
+    .about-page *::before,
+    .about-page *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+
+<div class="about-page">
+
+    <!-- HERO -->
+    <section class="about-hero">
+
+        <div class="hero-slideshow">
+            <img src="/media/images/ravaged-roadway-scene-of-severe-pavement-damage-photo.jpg"
+                 class="slide active"
+                 alt="Damaged community road">
+
+            <img src="/media/images/road-with-crack-middle-generative-ai_1036445-6549.avif"
+                 class="slide"
+                 alt="Cracked road surface">
+
+            <img src="/media/images/water-gushes-rusty-metal-pipe-break-pipeline-accident-industrial-emergency-stream-leaks-damaged-old-plumbing-system-pollution-385656164.webp"
+                 class="slide"
+                 alt="Burst water pipe">
+
+            <img src="/media/images/illegal-waste-in-Durban.webp"
+                 class="slide"
+                 alt="Illegal waste dumping">
+
+            <img src="/media/images/low-angle-view-of-a-severed-wooden-utility-pole-tangled-with-overhead-electric-supply-wires-in-the-aftermath-of-storm-that-cuts-village-power-supply-2JBDG36.jpg"
+                 class="slide"
+                 alt="Damaged electricity pole">
+
+            <img src="/media/images/valleypivotelctricalwirespans-9.jpg"
+                 class="slide"
+                 alt="Electricity infrastructure">
+        </div>
+
+        <div class="hero-overlay">
+            <div class="container hero-content">
+                <span class="hero-eyebrow">Our community. Our future.</span>
+
+                <h1>About Smart Community Hub</h1>
+
+                <p>
+                    Transforming communities through technology,
+                    transparency and collaboration.
+                </p>
+
+                <a href="{% url 'register' %}" class="btn hero-btn">
+                    Join Our Community
+                    <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- OUR STORY -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+
+                <span class="about-section-label">Our Story</span>
+
+                <h2>Why Smart Community Hub?</h2>
+
+                <p>
+                    Every community deserves a simple and reliable way to
+                    communicate with local authorities.
+                </p>
+
+                <p>
+                    Unfortunately, many service delivery issues are reported
+                    late, updates are difficult to track, and valuable
+                    community opportunities often fail to reach residents.
+                </p>
+
+                <p>
+                    Smart Community Hub was created to bridge this gap by
+                    providing one digital platform where residents can report
+                    issues, receive updates, access opportunities and actively
+                    contribute to building stronger communities.
+                </p>
+
+                <div class="story-highlight">
+                    We believe technology should connect people, simplify
+                    service delivery and create opportunities that improve
+                    everyday life.
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE VALUES -->
+    <section class="values-section">
+        <div class="container">
+
+            <div class="values-heading">
+                <span class="about-section-label">What Guides Us</span>
+                <h2>Our Core Values</h2>
+                <p>
+                    Every feature is designed to promote transparency,
+                    encourage participation and improve communication between
+                    residents and local authorities.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-eye-fill" aria-hidden="true"></i>
+                        </div>
+                        <h3>Transparency</h3>
+                        <p>
+                            Making information and service delivery progress
+                            easier for community members to understand.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-lightbulb-fill" aria-hidden="true"></i>
+                        </div>
+                        <h3>Innovation</h3>
+                        <p>
+                            Using practical digital solutions to address
+                            community challenges and improve everyday life.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        </div>
+                        <h3>Community</h3>
+                        <p>
+                            Encouraging residents to participate, share
+                            concerns and work towards common goals.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-shield-check" aria-hidden="true"></i>
+                        </div>
+                        <h3>Accountability</h3>
+                        <p>
+                            Supporting responsible communication and helping
+                            residents follow the progress of reported issues.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-universal-access" aria-hidden="true"></i>
+                        </div>
+                        <h3>Accessibility</h3>
+                        <p>
+                            Striving to make community information and digital
+                            services simple and accessible to residents.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-stars" aria-hidden="true"></i>
+                        </div>
+                        <h3>Empowerment</h3>
+                        <p>
+                            Giving residents a platform to raise concerns,
+                            discover opportunities and contribute to change.
+                        </p>
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="about-cta-section">
+        <div class="container">
+            <div class="about-cta">
+                <h2>Be Part of the Change</h2>
+                <p>
+                    Join Smart Community Hub and help build a more connected,
+                    informed and empowered community.
+                </p>
+
+                <a href="{% url 'register' %}" class="btn">
+                    Join Our Community
+                    <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- HERO SLIDESHOW SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll(
+        ".about-page .hero-slideshow .slide"
+    );
+
+    if (slides.length < 2) return;
+
+    let currentSlide = 0;
+    let slideshowTimer;
+
+    function showNextSlide() {
+        slides[currentSlide].classList.remove("active");
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add("active");
+    }
+
+    function startSlideshow() {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            return;
+        }
+        slideshowTimer = window.setInterval(showNextSlide, 5000);
+    }
+
+    startSlideshow();
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            window.clearInterval(slideshowTimer);
+        } else {
+            window.clearInterval(slideshowTimer);
+            startSlideshow();
+        }
+    });
+});
+</script>
+
+{% endblock %}

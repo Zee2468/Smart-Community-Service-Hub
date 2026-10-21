@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% block title %}My reports | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div><span class="text-uppercase fw-bold small text-success">Resident portal</span><h1 class="h2 fw-bold mt-1 mb-1">My community reports</h1><p class="text-secondary mb-0">Review your submissions and follow their progress.</p></div>
+        <a href="{% url 'report-issue' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Report an issue</a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-xl-3"><a href="{% url 'issue-list' %}" class="text-decoration-none text-reset"><div class="card h-100"><div class="card-body p-3 p-lg-4"><div class="text-secondary small">All reports</div><div class="h2 fw-bold mb-0 mt-2">{{ total_issues|default:0 }}</div></div></div></a></div>
+        <div class="col-6 col-xl-3"><a href="{% url 'issue-list' %}?status=Pending" class="text-decoration-none text-reset"><div class="card h-100"><div class="card-body p-3 p-lg-4"><div class="text-secondary small">Pending</div><div class="h2 fw-bold text-warning mb-0 mt-2">{{ pending|default:0 }}</div></div></div></a></div>
+        <div class="col-6 col-xl-3"><a href="{% url 'issue-list' %}?status=In%20Progress" class="text-decoration-none text-reset"><div class="card h-100"><div class="card-body p-3 p-lg-4"><div class="text-secondary small">In progress</div><div class="h2 fw-bold text-primary mb-0 mt-2">{{ in_progress|default:0 }}</div></div></div></a></div>
+        <div class="col-6 col-xl-3"><a href="{% url 'issue-list' %}?status=Resolved" class="text-decoration-none text-reset"><div class="card h-100"><div class="card-body p-3 p-lg-4"><div class="text-secondary small">Resolved</div><div class="h2 fw-bold text-success mb-0 mt-2">{{ resolved|default:0 }}</div></div></div></a></div>
+    </div>
+
+    <form method="get" class="card card-body mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-lg-5"><label class="form-label small fw-semibold" for="report-search">Search reports</label><input id="report-search" class="form-control" type="search" name="search" value="{{ search }}" placeholder="Search by report title"></div>
+            <div class="col-md-6 col-lg-3"><label class="form-label small fw-semibold" for="report-category">Category</label><select id="report-category" name="category" class="form-select"><option value="">All categories</option>{% for value,label in category_choices %}<option value="{{ value }}" {% if category == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+            <div class="col-md-6 col-lg-2"><label class="form-label small fw-semibold" for="report-status">Status</label><select id="report-status" name="status" class="form-select"><option value="">All statuses</option>{% for value,label in status_choices %}<option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+            <div class="col-lg-2 d-grid"><button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Apply filters</button></div>
+        </div>
+        {% if search or category or status %}<div class="mt-3"><a href="{% url 'issue-list' %}" class="small text-success text-decoration-none">Clear filters</a></div>{% endif %}
+    </form>
+
+    <div class="row g-3">
+        {% for issue in issues %}
+        <div class="col-md-6 col-xl-4">
+            <article class="card h-100 overflow-hidden">
+                {% if issue.image %}
+                    <img src="{{ issue.image.url }}" alt="Photo attached to {{ issue.title }}" class="w-100" style="height:190px;object-fit:cover;">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-body-secondary text-secondary" style="height:145px;"><i class="bi bi-image fs-1"></i></div>
+                {% endif %}
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-2"><span class="badge rounded-pill text-bg-light">{{ issue.category }}</span><span class="badge {% if issue.status == 'Resolved' %}text-bg-success{% elif issue.status == 'In Progress' %}text-bg-primary{% else %}text-bg-warning{% endif %}">{{ issue.status }}</span></div>
+                    <h2 class="h5 fw-bold">{{ issue.title }}</h2>
+                    <p class="text-secondary small">{{ issue.description|truncatewords:24 }}</p>
+                    <div class="small text-secondary mb-2"><i class="bi bi-geo-alt me-1"></i>{{ issue.location }}</div>
+                    <div class="small text-secondary mb-3"><i class="bi bi-calendar3 me-1"></i>{{ issue.created_at|date:"d M Y, H:i" }}</div>
+                    <div class="d-flex gap-2 mt-auto">
+                        <a href="{% url 'issue-detail' issue.pk %}" class="btn btn-outline-success flex-grow-1"><i class="bi bi-eye me-1"></i>Details</a>
+                        <a href="{% url 'edit-issue' issue.pk %}" class="btn btn-outline-secondary" aria-label="Edit {{ issue.title }}"><i class="bi bi-pencil"></i></a>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% empty %}
+        <div class="col-12"><div class="card"><div class="card-body text-center py-5 px-3"><span class="d-inline-grid place-items-center rounded-circle bg-success-subtle text-success mb-3" style="width:70px;height:70px;"><i class="bi bi-clipboard2-plus fs-2"></i></span><h2 class="h4 fw-bold">{% if search or category or status %}No reports match these filters{% else %}You haven't submitted a report yet{% endif %}</h2><p class="text-secondary mx-auto" style="max-width:500px;">Report a damaged road, water problem, electricity fault, illegal dumping or another issue affecting your community.</p>{% if search or category or status %}<a href="{% url 'issue-list' %}" class="btn btn-outline-success me-2">Clear filters</a>{% endif %}<a href="{% url 'report-issue' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Submit a report</a></div></div></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

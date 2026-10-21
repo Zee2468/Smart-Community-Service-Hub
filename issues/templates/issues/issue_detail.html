@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% block title %}{{ issue.title }} | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0" style="max-width:1100px;">
+    <a href="{% url 'issue-list' %}" class="text-success text-decoration-none small fw-semibold"><i class="bi bi-arrow-left me-1"></i>Back to my reports</a>
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mt-3 mb-4">
+        <div><span class="badge rounded-pill text-bg-light mb-2">{{ issue.category }}</span><h1 class="h2 fw-bold mb-2">{{ issue.title }}</h1><div class="text-secondary small"><i class="bi bi-calendar3 me-1"></i>Submitted {{ issue.created_at|date:"d M Y, H:i" }} <span class="mx-2">·</span><i class="bi bi-geo-alt me-1"></i>{{ issue.location }}</div></div>
+        <span class="badge fs-6 {% if issue.status == 'Resolved' %}text-bg-success{% elif issue.status == 'In Progress' %}text-bg-primary{% else %}text-bg-warning{% endif %}">{{ issue.status }}</span>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <section class="card overflow-hidden">
+                {% if issue.image %}<img src="{{ issue.image.url }}" alt="Photo attached to {{ issue.title }}" class="w-100" style="max-height:440px;object-fit:cover;">{% else %}<div class="d-flex justify-content-center align-items-center bg-body-secondary text-secondary" style="height:180px;"><i class="bi bi-image fs-1"></i></div>{% endif %}
+                <div class="card-body p-4"><h2 class="h5 fw-bold">Issue description</h2><p class="text-secondary mb-0" style="white-space:pre-line;">{{ issue.description }}</p></div>
+            </section>
+        </div>
+        <div class="col-lg-5">
+            <section class="card mb-3"><div class="card-body p-4"><h2 class="h5 fw-bold mb-3">Report summary</h2><div class="d-flex justify-content-between py-2 border-bottom"><span class="text-secondary">Reference</span><strong>#{{ issue.pk }}</strong></div><div class="d-flex justify-content-between py-2 border-bottom"><span class="text-secondary">Category</span><strong>{{ issue.category }}</strong></div><div class="d-flex justify-content-between py-2 border-bottom"><span class="text-secondary">Current status</span><strong>{{ issue.status }}</strong></div><div class="d-flex justify-content-between py-2"><span class="text-secondary">Last shown</span><strong>{{ issue.created_at|date:"d M Y" }}</strong></div></div></section>
+            <section class="card"><div class="card-body p-4"><h2 class="h5 fw-bold mb-2">Next steps</h2><p class="text-secondary small">Your report status will be updated by the hub administrator as it is reviewed. You can return here to check progress.</p><div class="d-grid gap-2"><a href="{% url 'edit-issue' issue.pk %}" class="btn btn-outline-success"><i class="bi bi-pencil me-2"></i>Edit report details</a><a href="{% url 'delete-issue' issue.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash me-2"></i>Delete report</a></div></div></section>
+        </div>
+    </div>
+</div>
+{% endblock %}

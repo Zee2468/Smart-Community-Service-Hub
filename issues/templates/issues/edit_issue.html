@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+{% block title %}Edit report | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0" style="max-width:850px;">
+    <a href="{% url 'issue-detail' issue.pk %}" class="text-success text-decoration-none small fw-semibold"><i class="bi bi-arrow-left me-1"></i>Back to report</a>
+    <div class="mb-4 mt-3"><span class="text-uppercase fw-bold small text-success">Resident portal</span><h1 class="h2 fw-bold mt-1 mb-1">Edit report</h1><p class="text-secondary mb-0">Update the information you submitted. Report status is managed by the hub team.</p></div>
+    <section class="card"><div class="card-body p-4 p-lg-5">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+            {% for field in form %}
+                <div class="mb-4"><label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}{% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}</div>
+            {% endfor %}
+            <div class="d-flex flex-wrap gap-2"><button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle me-2"></i>Save changes</button><a href="{% url 'issue-detail' issue.pk %}" class="btn btn-outline-secondary">Cancel</a></div>
+        </form>
+    </div></section>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base/base.html" %}
+{% block title %}Opportunities | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"><div><span class="text-uppercase fw-bold small text-success">Community content</span><h1 class="h2 fw-bold mt-1 mb-1">Opportunities</h1><p class="text-secondary mb-0">Jobs, internships, learnerships and training shared with residents.</p></div><a href="{% url 'create-opportunity' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Add opportunity</a></div>
+    <section class="card"><div class="table-responsive"><table class="table align-middle mb-0"><thead class="table-light"><tr><th class="ps-4">Opportunity</th><th>Company</th><th>Type</th><th>Location</th><th>Closing date</th><th>Added by</th></tr></thead><tbody>
+    {% for item in items %}<tr><td class="ps-4 fw-semibold">{{ item.title }}<div class="small text-secondary">{{ item.description|truncatechars:85 }}</div></td><td>{{ item.company }}</td><td><span class="badge text-bg-light">{{ item.category }}</span></td><td>{{ item.location }}</td><td>{{ item.closing_date|date:"d M Y" }}</td><td>{{ item.user.username }}</td></tr>
+    {% empty %}<tr><td colspan="6" class="text-center text-secondary py-5">No opportunities have been added.</td></tr>{% endfor %}
+    </tbody></table></div></section>
+</div>
+{% endblock %}

@@ -1,0 +1,298 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container py-4">
+
+<div class="d-flex justify-content-between mb-4">
+
+<h2 class="fw-bold text-primary">
+
+Administrator Dashboard
+
+</h2>
+
+<a href="/admin/" class="btn btn-dark">
+
+Open Django Admin
+
+</a>
+
+</div>
+
+
+<div class="row">
+
+<div class="col-md-3 mb-4">
+
+<div class="card stats-card">
+
+<div class="card-body text-center">
+
+<h1 class="text-primary">
+
+{{ users }}
+
+</h1>
+
+<h5>
+
+Users
+
+</h5>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-3 mb-4">
+
+<div class="card stats-card">
+
+<div class="card-body text-center">
+
+<h1 class="text-danger">
+
+{{ issues }}
+
+</h1>
+
+<h5>
+
+Issues
+
+</h5>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-3 mb-4">
+
+<div class="card stats-card">
+
+<div class="card-body text-center">
+
+<h1 class="text-success">
+
+{{ events }}
+
+</h1>
+
+<h5>
+
+Events
+
+</h5>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-3 mb-4">
+
+<div class="card stats-card">
+
+<div class="card-body text-center">
+
+<h1 class="text-warning">
+
+{{ opportunities }}
+
+</h1>
+
+<h5>
+
+Opportunities
+
+</h5>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h2 class="text-warning">
+
+{{ pending }}
+
+</h2>
+
+Pending Issues
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h2 class="text-primary">
+
+{{ progress }}
+
+</h2>
+
+In Progress
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h2 class="text-success">
+
+{{ resolved }}
+
+</h2>
+
+Resolved
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card shadow mt-5">
+
+<div class="card-header bg-primary text-white">
+
+Recent Issues
+
+</div>
+
+<div class="card-body">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Title</th>
+
+<th>Status</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for issue in recent_issues %}
+
+<tr>
+
+<td>{{ issue.title }}</td>
+
+<td>{{ issue.status }}</td>
+
+<td>{{ issue.created_at|date:"d M Y" }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="card shadow mt-5">
+
+<div class="card-header bg-success text-white">
+
+Recent Events
+
+</div>
+
+<div class="card-body">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Title</th>
+
+<th>Location</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for event in recent_events %}
+
+<tr>
+
+<td>{{ event.title }}</td>
+
+<td>{{ event.location }}</td>
+
+<td>{{ event.event_date }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

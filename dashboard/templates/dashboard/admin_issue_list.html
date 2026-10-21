@@ -1,0 +1,287 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold text-primary">
+                <i class="bi bi-list-check"></i>
+                Manage Community Issues
+            </h2>
+
+            <p class="text-muted mb-0">
+                View and update all reported community issues.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 stats-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Total Issues</h6>
+
+                    <h2 class="text-primary">
+
+                        {{ total }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 stats-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Pending</h6>
+
+                    <h2 class="text-warning">
+
+                        {{ pending }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 stats-card">
+
+                <div class="card-body text-center">
+
+                    <h6>In Progress</h6>
+
+                    <h2 class="text-info">
+
+                        {{ progress }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 stats-card">
+
+                <div class="card-body text-center">
+
+                    <h6>Resolved</h6>
+
+                    <h2 class="text-success">
+
+                        {{ resolved }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+
+                Community Issue Reports
+
+            </h5>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Image</th>
+
+                        <th>Title</th>
+
+                        <th>Category</th>
+
+                        <th>Reported By</th>
+
+                        <th>Location</th>
+
+                        <th>Status</th>
+
+                        <th>Date</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for issue in issues %}
+
+                    <tr>
+
+                        <td>
+
+                            #{{ issue.id }}
+
+                        </td>
+
+                        <td>
+
+                            {% if issue.image %}
+
+                                <img src="{{ issue.image.url }}"
+                                     width="70"
+                                     class="rounded">
+
+                            {% else %}
+
+                                <span class="text-muted">
+
+                                    No Image
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+
+                                {{ issue.title }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            {{ issue.category }}
+
+                        </td>
+
+                        <td>
+
+                            {{ issue.user.username }}
+
+                        </td>
+
+                        <td>
+
+                            {{ issue.location }}
+
+                        </td>
+
+                        <td>
+
+                            {% if issue.status == "Pending" %}
+
+                                <span class="badge bg-warning">
+
+                                    Pending
+
+                                </span>
+
+                            {% elif issue.status == "In Progress" %}
+
+                                <span class="badge bg-primary">
+
+                                    In Progress
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-success">
+
+                                    Resolved
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ issue.created_at|date:"d M Y" }}
+
+                        </td>
+
+                        <td>
+
+                            <a href="{% url 'admin-update-issue' issue.id %}"
+                               class="btn btn-sm btn-primary">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="9" class="text-center p-5">
+
+                            No Issues Found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,603 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102a43">
+    <title>{% block title %}eMangweni Smart Community Hub{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --hub-ink: #172b4d;
+            --hub-muted: #64748b;
+            --hub-green: #16834a;
+            --hub-green-dark: #11683b;
+            --hub-bg: #f4f7fb;
+            --hub-border: #e4eaf1;
+            --hub-sidebar: #102033;
+            --hub-sidebar-soft: #182d43;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background: var(--hub-bg);
+            color: var(--hub-ink);
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        a { text-underline-offset: 3px; }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            min-height: 76px;
+            padding: 12px 0;
+            background: rgba(255,255,255,.96) !important;
+            border-bottom: 1px solid var(--hub-border);
+            box-shadow: 0 4px 18px rgba(15, 35, 60, .04);
+            backdrop-filter: blur(12px);
+        }
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--hub-ink) !important;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+        .navbar-brand-icon {
+            display: inline-grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #1c9957, #0c7668);
+            color: white;
+            font-size: 21px;
+        }
+        .nav-link {
+            color: #4b5d73 !important;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 4px;
+            padding: 10px 12px !important;
+            border-radius: 9px;
+            transition: background .2s ease, color .2s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--hub-green-dark) !important;
+            background: #edf8f1;
+        }
+        #menu-btn {
+            display: inline-grid;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            place-items: center;
+            padding: 0;
+            border: 1px solid var(--hub-border);
+            border-radius: 13px;
+            background: #f7fafc;
+            color: var(--hub-ink);
+            transition: background .2s, color .2s, border-color .2s;
+        }
+        #menu-btn:hover, #menu-btn:focus-visible {
+            background: var(--hub-green);
+            border-color: var(--hub-green);
+            color: white;
+        }
+        #menu-btn i { font-size: 24px; line-height: 1; }
+        .navbar-user {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #34465c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .navbar-user-icon {
+            display: inline-grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border-radius: 50%;
+            background: #e7f5ec;
+            color: var(--hub-green-dark);
+            font-size: 17px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            width: 286px;
+            height: 100dvh;
+            overflow-y: auto;
+            background: var(--hub-sidebar);
+            color: #f8fafc;
+            box-shadow: 16px 0 40px rgba(4, 15, 30, .2);
+            transform: translateX(-102%);
+            visibility: hidden;
+            transition: transform .28s ease, visibility .28s ease;
+        }
+        .sidebar.active {
+            transform: translateX(0);
+            visibility: visible;
+        }
+        .sidebar-header {
+            padding: 23px 19px 19px;
+            background: #0c1929;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 22px;
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar-brand:hover { color: white; }
+        .brand-icon {
+            display: grid;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #1c9957, #0c7668);
+            color: white;
+            font-size: 22px;
+        }
+        .sidebar-brand strong {
+            display: block;
+            font-size: 18px;
+            letter-spacing: -.4px;
+            line-height: 1.2;
+        }
+        .sidebar-brand small {
+            display: block;
+            margin-top: 4px;
+            color: #91a4ba;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.25px;
+        }
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+            padding: 13px 11px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 13px;
+            background: rgba(255,255,255,.045);
+        }
+        .profile-circle {
+            display: grid;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            place-items: center;
+            border-radius: 12px;
+            background: #d8f5e3;
+            color: #11683b;
+            font-size: 19px;
+            font-weight: 800;
+        }
+        .profile-info { min-width: 0; }
+        .profile-info h6 {
+            margin: 0 0 5px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+        .profile-info span {
+            color: #a7b8ca;
+            font-size: 11px;
+        }
+        .profile-info span i {
+            margin-right: 5px;
+            color: #4ade80;
+            font-size: 8px;
+        }
+        .sidebar-nav { flex: 1; padding: 16px 12px 20px; }
+        .sidebar-section {
+            display: block;
+            padding: 14px 12px 8px;
+            color: #8195ac;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 44px;
+            margin: 4px 0;
+            padding: 11px 12px;
+            border-radius: 10px;
+            color: #c6d2df;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background .18s ease, color .18s ease, transform .18s ease;
+        }
+        .sidebar-link > i:first-child {
+            width: 20px;
+            flex-shrink: 0;
+            text-align: center;
+            font-size: 17px;
+        }
+        .sidebar-link:hover {
+            transform: translateX(2px);
+            background: rgba(255,255,255,.07);
+            color: white;
+        }
+        .sidebar-link.active {
+            background: linear-gradient(100deg, #137b43, #199754);
+            color: white;
+            box-shadow: 0 5px 14px rgba(12, 120, 62, .18);
+        }
+        .sidebar-link.active > i:first-child { color: #dcfce7; }
+        .notification-count {
+            display: inline-grid;
+            min-width: 21px;
+            height: 21px;
+            place-items: center;
+            margin-left: auto;
+            padding: 0 5px;
+            border-radius: 20px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .sidebar-footer {
+            padding: 13px 12px 17px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+        .sidebar-help {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 12px 10px;
+            border: 1px solid rgba(16,185,129,.16);
+            border-radius: 11px;
+            background: rgba(16,185,129,.08);
+        }
+        .sidebar-help > i { color: #6ee7b7; font-size: 21px; }
+        .sidebar-help strong, .sidebar-help small { display: block; }
+        .sidebar-help strong { color: #e2e8f0; font-size: 10px; }
+        .sidebar-help small { margin-top: 3px; color: #91a4ba; font-size: 10px; }
+        .logout-form { margin: 0; }
+        .logout-button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+        }
+        .logout-button:hover { color: #fff; background: rgba(239,68,68,.14); }
+        .logout-button > i:first-child { color: #fca5a5; }
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1040;
+            background: rgba(2, 6, 23, .5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+        }
+        .sidebar-backdrop.active { opacity: 1; visibility: visible; }
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #34465c; border-radius: 20px; }
+
+        .page-content {
+            min-height: calc(100vh - 76px);
+            padding: 28px;
+            transition: margin-left .28s ease;
+        }
+        .app-footer {
+            padding: 22px 16px;
+            color: #738196;
+            text-align: center;
+            font-size: 12px;
+        }
+        .card {
+            border: 1px solid rgba(222, 230, 239, .8);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(21, 42, 69, .045);
+        }
+        .form-control, .form-select {
+            border-color: #d9e2ec;
+            border-radius: 10px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #58a77a;
+            box-shadow: 0 0 0 .2rem rgba(22, 131, 74, .12);
+        }
+        .btn { border-radius: 10px; font-weight: 650; }
+        .btn-primary {
+            --bs-btn-bg: var(--hub-green);
+            --bs-btn-border-color: var(--hub-green);
+            --bs-btn-hover-bg: var(--hub-green-dark);
+            --bs-btn-hover-border-color: var(--hub-green-dark);
+        }
+        .alert { border-radius: 12px; }
+
+        @media (min-width: 992px) {
+            .sidebar-backdrop { display: none; }
+            .sidebar.active ~ .page-content {
+                margin-left: 286px;
+                width: calc(100% - 286px);
+            }
+            #navbar-wrapper.sidebar-open {
+                margin-left: 286px;
+                width: calc(100% - 286px);
+            }
+            #navbar-wrapper { transition: margin-left .28s ease, width .28s ease; }
+            .sidebar.active ~ .app-footer {
+                margin-left: 286px;
+                width: calc(100% - 286px);
+            }
+        }
+        @media (max-width: 991.98px) {
+            .page-content { padding: 20px 14px; }
+            .navbar-brand { font-size: 18px; }
+            .navbar .container { gap: 8px; }
+            .navbar-user .username-label { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+            }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<div id="navbar-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid px-3 px-lg-4">
+            {% if user.is_authenticated %}
+                <button id="menu-btn" type="button" aria-label="Open navigation menu"
+                        aria-controls="sidebar" aria-expanded="false">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                {% if user.is_staff %}
+                    <a class="navbar-brand" href="{% url 'admin-portal-dashboard' %}">
+                {% else %}
+                    <a class="navbar-brand" href="{% url 'dashboard' %}">
+                {% endif %}
+                    <span class="navbar-brand-icon"><i class="bi bi-buildings-fill"></i></span>
+                    <span>eMangweni</span>
+                </a>
+
+                <div class="ms-auto d-flex align-items-center gap-3">
+                    {% if user.is_staff %}
+                        <a href="{% url 'admin-notifications' %}" class="position-relative text-decoration-none text-dark" aria-label="Open admin notifications">
+                            <i class="bi bi-bell fs-5"></i>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'notifications' %}" class="position-relative text-decoration-none text-dark" aria-label="Open notifications">
+                            <i class="bi bi-bell fs-5"></i>
+                            {% if unread_notifications %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ unread_notifications }}</span>
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                    <span class="navbar-user">
+                        <span class="navbar-user-icon"><i class="bi bi-person-fill"></i></span>
+                        <span class="username-label">{{ user.get_short_name|default:user.username }}</span>
+                    </span>
+                </div>
+            {% else %}
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <span class="navbar-brand-icon"><i class="bi bi-buildings-fill"></i></span>
+                    <span>eMangweni</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar" aria-controls="mainNavbar"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav mx-auto align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a></li>
+                        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a></li>
+                        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                    <div class="d-flex gap-2 pb-3 pb-lg-0">
+                        <a href="{% url 'login' %}" class="btn btn-outline-success px-3">Log in</a>
+                        <a href="{% url 'register' %}" class="btn btn-primary px-3">Create account</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+</div>
+
+{% if user.is_authenticated %}
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+        <div class="sidebar-header">
+            {% if user.is_staff %}
+                <a href="{% url 'admin-portal-dashboard' %}" class="sidebar-brand">
+            {% else %}
+                <a href="{% url 'dashboard' %}" class="sidebar-brand">
+            {% endif %}
+                <span class="brand-icon"><i class="bi bi-buildings-fill"></i></span>
+                <span><strong>eMangweni</strong><small>SMART COMMUNITY HUB</small></span>
+            </a>
+            <div class="sidebar-profile">
+                <div class="profile-circle">{{ user.username|first|upper }}</div>
+                <div class="profile-info">
+                    <h6>{{ user.get_short_name|default:user.username }}</h6>
+                    {% if user.is_staff %}
+                        <span><i class="bi bi-circle-fill"></i> Administrator</span>
+                    {% else %}
+                        <span><i class="bi bi-circle-fill"></i> Resident account</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            {% if user.is_staff %}
+                <span class="sidebar-section">ADMINISTRATION</span>
+                <a href="{% url 'admin-portal-dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-portal-dashboard' %}active{% endif %}">
+                    <i class="bi bi-grid-1x2-fill"></i><span>Overview</span>
+                </a>
+                <a href="{% url 'admin-issues' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-issues' %}active{% endif %}">
+                    <i class="bi bi-clipboard2-pulse-fill"></i><span>Manage Reports</span>
+                </a>
+                <a href="{% url 'admin-users' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-users' %}active{% endif %}">
+                    <i class="bi bi-people-fill"></i><span>Residents</span>
+                </a>
+                <span class="sidebar-section">COMMUNITY CONTENT</span>
+                <a href="{% url 'admin-events' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-events' %}active{% endif %}">
+                    <i class="bi bi-calendar-event-fill"></i><span>Events</span>
+                </a>
+                <a href="{% url 'admin-opportunities' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-opportunities' %}active{% endif %}">
+                    <i class="bi bi-briefcase-fill"></i><span>Opportunities</span>
+                </a>
+                <a href="{% url 'admin-notifications' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-notifications' %}active{% endif %}">
+                    <i class="bi bi-bell-fill"></i><span>Notifications</span>
+                </a>
+                <span class="sidebar-section">INSIGHTS</span>
+                <a href="{% url 'admin-reports' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-reports' %}active{% endif %}">
+                    <i class="bi bi-bar-chart-line-fill"></i><span>Reports & analytics</span>
+                </a>
+                <a href="{% url 'admin-settings' %}" class="sidebar-link {% if request.resolver_match.url_name == 'admin-settings' %}active{% endif %}">
+                    <i class="bi bi-gear-fill"></i><span>Hub settings</span>
+                </a>
+            {% else %}
+                <span class="sidebar-section">MY WORKSPACE</span>
+                <a href="{% url 'dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="bi bi-grid-1x2-fill"></i><span>My dashboard</span>
+                </a>
+                <a href="{% url 'issue-list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'issue-list' %}active{% endif %}">
+                    <i class="bi bi-clipboard2-pulse-fill"></i><span>My reports</span>
+                </a>
+                <a href="{% url 'report-issue' %}" class="sidebar-link {% if request.resolver_match.url_name == 'report-issue' %}active{% endif %}">
+                    <i class="bi bi-plus-square-fill"></i><span>Report an issue</span>
+                </a>
+                <span class="sidebar-section">COMMUNITY</span>
+                <a href="{% url 'event-list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'event-list' %}active{% endif %}">
+                    <i class="bi bi-calendar2-event-fill"></i><span>Community events</span>
+                </a>
+                <a href="{% url 'opportunity-list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'opportunity-list' %}active{% endif %}">
+                    <i class="bi bi-briefcase-fill"></i><span>Opportunities</span>
+                </a>
+                <a href="{% url 'notifications' %}" class="sidebar-link {% if request.resolver_match.url_name == 'notifications' %}active{% endif %}">
+                    <i class="bi bi-bell-fill"></i><span>Notifications</span>
+                    {% if unread_notifications %}<span class="notification-count">{{ unread_notifications }}</span>{% endif %}
+                </a>
+                <span class="sidebar-section">ACCOUNT</span>
+                <a href="{% url 'profile' %}" class="sidebar-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                    <i class="bi bi-person-gear"></i><span>My profile</span>
+                </a>
+            {% endif %}
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-help">
+                <i class="bi bi-shield-check"></i>
+                <div><strong>Your community matters</strong><small>Report. Track. Improve.</small></div>
+            </div>
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="sidebar-link logout-button">
+                    <i class="bi bi-box-arrow-left"></i><span>Sign out</span>
+                </button>
+            </form>
+        </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+{% endif %}
+
+<main class="page-content" id="content">
+    {% if messages %}
+        <div class="container-fluid px-0 pt-2" aria-live="polite">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="app-footer">
+    <span>eMangweni Smart Community Hub</span>
+    <span class="mx-2">•</span>
+    <span>Working together for better communities.</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.getElementById("menu-btn");
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    const navbar = document.getElementById("navbar-wrapper");
+
+    if (!button || !sidebar) return;
+
+    function setSidebar(open) {
+        sidebar.classList.toggle("active", open);
+        if (backdrop) backdrop.classList.toggle("active", open);
+        if (navbar) navbar.classList.toggle("sidebar-open", open);
+        button.setAttribute("aria-expanded", String(open));
+        button.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+        document.body.style.overflow = open && window.innerWidth < 992 ? "hidden" : "";
+    }
+
+    button.addEventListener("click", function () {
+        setSidebar(!sidebar.classList.contains("active"));
+    });
+
+    if (backdrop) backdrop.addEventListener("click", function () {
+        setSidebar(false);
+    });
+
+    sidebar.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            if (window.innerWidth < 992) setSidebar(false);
+        });
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") setSidebar(false);
+    });
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth >= 992) document.body.style.overflow = "";
+        if (window.innerWidth < 992 && navbar) navbar.classList.remove("sidebar-open");
+    });
+});
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

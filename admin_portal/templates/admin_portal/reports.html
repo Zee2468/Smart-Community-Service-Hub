@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% block title %}Reports and analytics | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="mb-4"><span class="text-uppercase fw-bold small text-success">Insights</span><h1 class="h2 fw-bold mt-1 mb-1">Reports & analytics</h1><p class="text-secondary mb-0">A live summary of reports currently stored in the hub.</p></div>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-secondary small">All reports</div><div class="display-6 fw-bold">{{ total }}</div></div></div></div>
+        <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-secondary small">Pending</div><div class="display-6 fw-bold text-warning">{{ pending }}</div></div></div></div>
+        <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-secondary small">In progress</div><div class="display-6 fw-bold text-primary">{{ in_progress }}</div></div></div></div>
+        <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-secondary small">Resolved</div><div class="display-6 fw-bold text-success">{{ resolved }}</div></div></div></div>
+    </div>
+    <div class="row g-3">
+        <div class="col-lg-5"><section class="card h-100"><div class="card-body p-4"><h2 class="h5 fw-bold mb-3">Reports by category</h2>
+        {% for item in category_counts %}<div class="mb-3"><div class="d-flex justify-content-between small mb-1"><span>{{ item.category }}</span><strong>{{ item.total }}</strong></div><div class="progress" role="progressbar" aria-label="{{ item.category }}" aria-valuenow="{{ item.total }}" aria-valuemin="0" aria-valuemax="{{ total }}"><div class="progress-bar bg-success" style="width:{% if total %}{% widthratio item.total total 100 %}{% else %}0{% endif %}%"></div></div></div>
+        {% empty %}<p class="text-secondary">There are no report categories to display yet.</p>{% endfor %}
+        </div></section></div>
+        <div class="col-lg-7"><section class="card h-100"><div class="card-body p-4"><h2 class="h5 fw-bold mb-3">Latest submissions</h2>
+        {% for issue in recent_issues %}<div class="d-flex justify-content-between gap-3 border-top py-3"><div><div class="fw-semibold">{{ issue.title }}</div><small class="text-secondary">{{ issue.category }} · {{ issue.user.username }}</small></div><span class="badge align-self-start {% if issue.status == 'Resolved' %}text-bg-success{% elif issue.status == 'In Progress' %}text-bg-primary{% else %}text-bg-warning{% endif %}">{{ issue.status }}</span></div>
+        {% empty %}<p class="text-secondary">No reports have been submitted yet.</p>{% endfor %}
+        </div></section></div>
+    </div>
+</div>
+{% endblock %}

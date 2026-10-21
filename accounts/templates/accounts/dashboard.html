@@ -1,0 +1,674 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="resident-dashboard container-fluid px-3 px-lg-4 py-4">
+
+    <!-- Welcome banner -->
+    <section class="resident-hero mb-4">
+        <div class="hero-copy">
+            <span class="hero-eyebrow">COMMUNITY SERVICE PORTAL</span>
+            <h1>Welcome, {{ user.first_name|default:user.username }}</h1>
+            <p>
+                Together, we can build a safer, cleaner and better-connected
+                community. Report a problem and help us take action.
+            </p>
+            <a href="{% url 'report-issue' %}" class="btn btn-light hero-button">
+                <i class="bi bi-plus-circle me-2"></i>Report a Problem
+            </a>
+        </div>
+        <div class="hero-symbol" aria-hidden="true">
+            <i class="bi bi-buildings"></i>
+        </div>
+    </section>
+
+    <!-- Main resident actions -->
+    <section class="mb-4" aria-labelledby="actions-heading">
+        <div class="section-heading">
+            <div>
+                <h2 id="actions-heading">Your Community Reports</h2>
+                <p>Keep track of the problems you have reported.</p>
+            </div>
+            <a href="{% url 'issue-list' %}" class="text-link">
+                View all reports <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-xl-3">
+                <article class="stat-card">
+                    <span class="stat-icon icon-blue">
+                        <i class="bi bi-clipboard-data"></i>
+                    </span>
+                    <p>Total reports</p>
+                    <h3>{{ total_issues|default:0 }}</h3>
+                    <span class="stat-note">Reports submitted</span>
+                </article>
+            </div>
+
+            <div class="col-6 col-xl-3">
+                <article class="stat-card">
+                    <span class="stat-icon icon-amber">
+                        <i class="bi bi-hourglass-split"></i>
+                    </span>
+                    <p>Pending</p>
+                    <h3>{{ pending|default:0 }}</h3>
+                    <span class="stat-note">Awaiting action</span>
+                </article>
+            </div>
+
+            <div class="col-6 col-xl-3">
+                <article class="stat-card">
+                    <span class="stat-icon icon-cyan">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </span>
+                    <p>In progress</p>
+                    <h3>{{ in_progress|default:0 }}</h3>
+                    <span class="stat-note">Being addressed</span>
+                </article>
+            </div>
+
+            <div class="col-6 col-xl-3">
+                <article class="stat-card">
+                    <span class="stat-icon icon-green">
+                        <i class="bi bi-check-circle"></i>
+                    </span>
+                    <p>Resolved</p>
+                    <h3>{{ resolved|default:0 }}</h3>
+                    <span class="stat-note">Completed reports</span>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+            <section class="content-card h-100">
+                <div class="content-card-header">
+                    <div>
+                        <h2>Recent Reports</h2>
+                        <p>Your latest community service reports</p>
+                    </div>
+                    <i class="bi bi-list-check heading-icon"></i>
+                </div>
+
+                <div class="report-list">
+                    {% for issue in recent_issues %}
+                    <article class="report-item">
+                        <div class="report-main">
+                            <div class="report-title-row">
+                                <h3>{{ issue.title }}</h3>
+
+                                {% if issue.status == "Pending" %}
+                                    <span class="status-pill status-pending">
+                                        Pending
+                                    </span>
+                                {% elif issue.status == "In Progress" %}
+                                    <span class="status-pill status-progress">
+                                        In progress
+                                    </span>
+                                {% elif issue.status == "Resolved" %}
+                                    <span class="status-pill status-resolved">
+                                        Resolved
+                                    </span>
+                                {% elif issue.status == "Rejected" %}
+                                    <span class="status-pill status-rejected">
+                                        Rejected
+                                    </span>
+                                {% else %}
+                                    <span class="status-pill status-neutral">
+                                        {{ issue.status|default:"Submitted" }}
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <p class="report-description">
+                                {{ issue.description|truncatechars:130 }}
+                            </p>
+
+                            <span class="report-date">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ issue.created_at|date:"d M Y, H:i" }}
+                            </span>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="bi bi-clipboard-plus"></i>
+                        </div>
+                        <h3>You haven't reported a problem yet</h3>
+                        <p>
+                            If you notice a damaged road, water outage,
+                            electricity fault or another community problem,
+                            report it here.
+                        </p>
+                        <a href="{% url 'report-issue' %}"
+                           class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-2"></i>
+                            Submit your first report
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if recent_issues %}
+                <div class="content-card-footer">
+                    <a href="{% url 'issue-list' %}" class="text-link">
+                        View all my reports
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <div class="col-lg-4">
+            <section class="content-card mb-4">
+                <div class="content-card-header">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>What would you like to do?</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <a href="{% url 'report-issue' %}" class="quick-action">
+                        <span class="quick-icon icon-blue">
+                            <i class="bi bi-plus-circle"></i>
+                        </span>
+                        <span>
+                            <strong>Report a problem</strong>
+                            <small>Tell us about a community issue</small>
+                        </span>
+                        <i class="bi bi-chevron-right ms-auto"></i>
+                    </a>
+
+                    <a href="{% url 'issue-list' %}" class="quick-action">
+                        <span class="quick-icon icon-green">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <span>
+                            <strong>Track my reports</strong>
+                            <small>Check report statuses</small>
+                        </span>
+                        <i class="bi bi-chevron-right ms-auto"></i>
+                    </a>
+                </div>
+            </section>
+
+            <section class="content-card">
+                <div class="content-card-header">
+                    <div>
+                        <h2>Report Overview</h2>
+                        <p>Summary of your reports</p>
+                    </div>
+                </div>
+
+                <div class="chart-wrap">
+                    <canvas id="issueChart"
+                            role="img"
+                            aria-label="Chart showing your pending, in-progress and resolved reports"
+                            data-pending="{{ pending|default:0 }}"
+                            data-progress="{{ in_progress|default:0 }}"
+                            data-resolved="{{ resolved|default:0 }}">
+                    </canvas>
+                    <p id="chartFallback" class="chart-fallback" hidden>
+                        Your report statistics will appear here when chart
+                        support is available.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <footer class="resident-footer">
+        <i class="bi bi-heart-fill me-1"></i>
+        Working together for a better community.
+    </footer>
+</div>
+
+<style>
+.resident-dashboard {
+    max-width: 1500px;
+    color: #192b45;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.resident-dashboard .resident-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    min-height: 245px;
+    padding: clamp(25px, 5vw, 52px);
+    color: #fff;
+    background: linear-gradient(120deg, #123b67, #176b76);
+    border-radius: 22px;
+}
+
+.hero-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+}
+
+.hero-eyebrow {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #bcece8;
+}
+
+.hero-copy h1 {
+    margin: 13px 0;
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+    font-weight: 750;
+}
+
+.hero-copy p {
+    max-width: 600px;
+    color: #e3eef8;
+    line-height: 1.7;
+}
+
+.hero-button {
+    margin-top: 8px;
+    padding: 12px 20px;
+    color: #123b67;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.hero-symbol {
+    padding: 0 20px;
+    color: rgba(255,255,255,.14);
+    font-size: clamp(5rem, 12vw, 10rem);
+}
+
+.section-heading,
+.content-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.section-heading {
+    margin: 25px 0 18px;
+}
+
+.section-heading h2,
+.content-card-header h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 750;
+}
+
+.section-heading p,
+.content-card-header p {
+    margin: 6px 0 0;
+    color: #78869a;
+    font-size: .88rem;
+}
+
+.text-link {
+    color: #1764b0;
+    font-weight: 650;
+    font-size: .88rem;
+    text-decoration: none;
+}
+
+.text-link:hover {
+    color: #104579;
+    text-decoration: underline;
+}
+
+.stat-card,
+.content-card {
+    background: #fff;
+    border: 1px solid #e9eef5;
+    border-radius: 16px;
+    box-shadow: 0 5px 22px rgba(25,43,69,.045);
+}
+
+.stat-card {
+    height: 100%;
+    min-height: 175px;
+    padding: 20px;
+}
+
+.stat-icon,
+.quick-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 12px;
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+}
+
+.icon-blue {
+    color: #2168bc;
+    background: #eaf2ff;
+}
+
+.icon-amber {
+    color: #9b6a00;
+    background: #fff4d9;
+}
+
+.icon-cyan {
+    color: #087c96;
+    background: #e0f8fc;
+}
+
+.icon-green {
+    color: #18794e;
+    background: #e2f6eb;
+}
+
+.stat-card p {
+    margin: 15px 0 3px;
+    color: #65748a;
+    font-size: .88rem;
+}
+
+.stat-card h3 {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 750;
+}
+
+.stat-note {
+    color: #8995a5;
+    font-size: .77rem;
+}
+
+.content-card {
+    overflow: hidden;
+}
+
+.content-card-header {
+    padding: 22px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.heading-icon {
+    color: #2468ad;
+    font-size: 1.7rem;
+}
+
+.report-item {
+    padding: 22px;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.report-item:last-child {
+    border-bottom: 0;
+}
+
+.report-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.report-title-row h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.report-description {
+    margin: 10px 0;
+    color: #65748a;
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+.report-date {
+    color: #8491a2;
+    font-size: .8rem;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-size: .73rem;
+    font-weight: 700;
+}
+
+.status-pending {
+    color: #875d00;
+    background: #fff1c2;
+}
+
+.status-progress {
+    color: #086b83;
+    background: #dff6fc;
+}
+
+.status-resolved {
+    color: #176744;
+    background: #ddf5e6;
+}
+
+.status-rejected {
+    color: #9a2935;
+    background: #fde7e9;
+}
+
+.status-neutral {
+    color: #536174;
+    background: #edf1f5;
+}
+
+.empty-state {
+    padding: 35px 24px;
+    text-align: center;
+}
+
+.empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    margin-bottom: 15px;
+    color: #2368b2;
+    background: #eaf2ff;
+    border-radius: 50%;
+    font-size: 1.8rem;
+}
+
+.empty-state h3 {
+    font-size: 1.05rem;
+    font-weight: 750;
+}
+
+.empty-state p {
+    max-width: 430px;
+    margin: 10px auto 20px;
+    color: #738197;
+    font-size: .88rem;
+    line-height: 1.7;
+}
+
+.content-card-footer {
+    padding: 16px 22px;
+    background: #fafbfd;
+    border-top: 1px solid #edf1f6;
+}
+
+.quick-actions {
+    padding: 8px 20px;
+}
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 16px 0;
+    color: #192b45;
+    text-decoration: none;
+    border-bottom: 1px solid #edf1f6;
+}
+
+.quick-action:last-child {
+    border-bottom: 0;
+}
+
+.quick-action:hover strong {
+    color: #1764b0;
+}
+
+.quick-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+}
+
+.quick-action strong,
+.quick-action small {
+    display: block;
+}
+
+.quick-action strong {
+    font-size: .88rem;
+}
+
+.quick-action small {
+    margin-top: 4px;
+    color: #7d8999;
+    font-size: .76rem;
+}
+
+.quick-action > .bi-chevron-right {
+    color: #95a1b1;
+}
+
+.chart-wrap {
+    position: relative;
+    min-height: 260px;
+    padding: 20px;
+}
+
+.chart-wrap canvas {
+    max-height: 280px;
+}
+
+.chart-fallback {
+    padding: 35px 10px;
+    color: #738197;
+    text-align: center;
+    font-size: .88rem;
+}
+
+.resident-footer {
+    padding: 28px 0 10px;
+    color: #8390a1;
+    text-align: center;
+    font-size: .82rem;
+}
+
+@media (max-width: 575px) {
+    .resident-dashboard .resident-hero {
+        min-height: auto;
+        padding: 25px 22px;
+    }
+
+    .hero-symbol {
+        display: none;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+    }
+
+    .section-heading > .text-link {
+        white-space: nowrap;
+    }
+
+    .stat-card {
+        padding: 15px;
+        min-height: 155px;
+    }
+
+    .stat-card h3 {
+        font-size: 1.6rem;
+    }
+
+    .report-item {
+        padding: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .resident-dashboard * {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const canvas = document.getElementById("issueChart");
+    const fallback = document.getElementById("chartFallback");
+
+    if (!canvas) return;
+
+    const pending = Number(canvas.dataset.pending) || 0;
+    const progress = Number(canvas.dataset.progress) || 0;
+    const resolved = Number(canvas.dataset.resolved) || 0;
+
+    if (typeof Chart === "undefined") {
+        fallback.hidden = false;
+        return;
+    }
+
+    new Chart(canvas, {
+        type: "doughnut",
+        data: {
+            labels: ["Pending", "In progress", "Resolved"],
+            datasets: [{
+                data: [pending, progress, resolved],
+                backgroundColor: ["#f0b429", "#24a4bc", "#239766"],
+                borderWidth: 0,
+                hoverOffset: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "68%",
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        padding: 18,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

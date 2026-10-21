@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+{% block title %}Hub settings | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="mb-4"><span class="text-uppercase fw-bold small text-success">Administration</span><h1 class="h2 fw-bold mt-1 mb-1">Hub settings</h1><p class="text-secondary mb-0">System information and operational reminders.</p></div>
+    <div class="row g-3">
+        <div class="col-lg-7"><section class="card h-100"><div class="card-body p-4"><h2 class="h5 fw-bold mb-3">Platform information</h2><dl class="row mb-0"><dt class="col-sm-4 text-secondary">Platform</dt><dd class="col-sm-8">eMangweni Smart Community Hub</dd><dt class="col-sm-4 text-secondary">Purpose</dt><dd class="col-sm-8">Community issue reporting and resident updates</dd><dt class="col-sm-4 text-secondary">Reporting statuses</dt><dd class="col-sm-8">Pending, In Progress, Resolved</dd><dt class="col-sm-4 text-secondary">Administrator</dt><dd class="col-sm-8">{{ request.user.username }}</dd></dl></div></section></div>
+        <div class="col-lg-5"><section class="card h-100"><div class="card-body p-4"><h2 class="h5 fw-bold mb-3"><i class="bi bi-shield-check text-success me-2"></i>Security reminders</h2><ul class="text-secondary ps-3 mb-0"><li class="mb-2">Use staff accounts only for administration.</li><li class="mb-2">Keep your Django secret key out of source control in production.</li><li class="mb-2">Use HTTPS and secure cookie settings when deploying publicly.</li><li>Back up the database and uploaded media regularly.</li></ul></div></section></div>
+    </div>
+    <div class="alert alert-info mt-4"><i class="bi bi-info-circle me-2"></i>This page currently displays system information; it does not change deployment or security settings.</div>
+</div>
+{% endblock %}

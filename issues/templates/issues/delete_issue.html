@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+{% block title %}Delete report | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0" style="max-width:700px;">
+    <section class="card border-danger-subtle mt-4"><div class="card-body p-4 p-lg-5 text-center">
+        <span class="d-inline-grid place-items-center rounded-circle bg-danger-subtle text-danger mb-3" style="width:70px;height:70px;"><i class="bi bi-trash3 fs-2"></i></span>
+        <h1 class="h3 fw-bold">Delete this report?</h1>
+        <p class="text-secondary">You are about to delete <strong>{{ issue.title }}</strong>. This action cannot be undone.</p>
+        <div class="rounded-3 bg-body-tertiary text-start p-3 mb-4"><div class="fw-semibold">{{ issue.title }}</div><small class="text-secondary">{{ issue.category }} · {{ issue.location }} · {{ issue.created_at|date:"d M Y" }}</small></div>
+        <form method="post" class="d-flex flex-wrap justify-content-center gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Yes, delete report</button>
+            <a href="{% url 'issue-detail' issue.pk %}" class="btn btn-outline-secondary">Keep report</a>
+        </form>
+    </div></section>
+</div>
+{% endblock %}

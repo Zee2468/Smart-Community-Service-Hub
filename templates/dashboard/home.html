@@ -1,0 +1,912 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* =========================
+   GLOBAL HOMEPAGE STYLES
+========================= */
+:root {
+    --hub-green: #198754;
+    --hub-dark-green: #11643d;
+    --hub-light-green: #eaf5ee;
+    --hub-dark: #172b24;
+    --hub-text: #58665f;
+    --hub-white: #ffffff;
+    --hub-radius: 18px;
+    --hub-shadow: 0 12px 35px rgba(22, 54, 38, 0.09);
+}
+
+.home-page {
+    color: var(--hub-dark);
+    overflow: hidden;
+}
+
+.home-page h2 {
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.section-label {
+    display: inline-block;
+    color: var(--hub-green);
+    background: var(--hub-light-green);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.section-description {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--hub-text);
+    line-height: 1.8;
+}
+
+/* =========================
+   HERO CAROUSEL
+========================= */
+.hero-slider {
+    position: relative;
+    background: #10251b;
+}
+
+#heroCarousel,
+#heroCarousel .carousel-item {
+    height: min(760px, 86vh);
+    min-height: 520px;
+}
+
+.hero-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: heroZoom 12s ease-in-out infinite alternate;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--hub-white);
+    padding: 35px 20px;
+    background: linear-gradient(
+        90deg,
+        rgba(7, 28, 18, 0.83),
+        rgba(7, 28, 18, 0.53),
+        rgba(7, 28, 18, 0.35)
+    );
+}
+
+.hero-overlay .container {
+    max-width: 950px;
+    animation: fadeUp 0.9s ease both;
+}
+
+.hero-eyebrow {
+    display: inline-block;
+    margin-bottom: 22px;
+    padding: 9px 17px;
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 50px;
+    background: rgba(255,255,255,0.1);
+    color: #e2f6e8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hero-overlay h1 {
+    margin-bottom: 22px;
+    font-size: clamp(36px, 5.5vw, 68px);
+    line-height: 1.12;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.25);
+}
+
+.hero-overlay h3 {
+    margin-bottom: 20px;
+    color: #d7f5df;
+    font-size: clamp(20px, 2.7vw, 30px);
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.hero-overlay p {
+    max-width: 680px;
+    margin: 0 auto 32px;
+    color: #f0f5f1;
+    font-size: clamp(16px, 1.7vw, 19px);
+    line-height: 1.8;
+}
+
+.hero-overlay .btn {
+    padding: 14px 30px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.hero-overlay .btn:hover {
+    transform: translateY(-3px);
+}
+
+.btn-hub {
+    background: var(--hub-green);
+    color: #fff;
+    border: 1px solid var(--hub-green);
+}
+
+.btn-hub:hover,
+.btn-hub:focus {
+    background: var(--hub-dark-green);
+    border-color: var(--hub-dark-green);
+    color: #fff;
+}
+
+.btn-outline-light {
+    border-width: 1px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 7%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 42px;
+    height: 42px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.18);
+    background-size: 45%;
+    backdrop-filter: blur(8px);
+}
+
+.carousel-indicators {
+    margin-bottom: 25px;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 26px;
+    height: 4px;
+    border: 0;
+    border-radius: 10px;
+    margin: 0 5px;
+}
+
+.carousel-indicators .active {
+    background-color: #79d49a;
+}
+
+/* =========================
+   WELCOME SECTION
+========================= */
+.welcome-section {
+    padding: 90px 0;
+    background: var(--hub-white);
+}
+
+.welcome-copy {
+    max-width: 780px;
+    margin: auto;
+    text-align: center;
+}
+
+.welcome-copy h2 {
+    margin-bottom: 22px;
+    font-size: clamp(28px, 4vw, 40px);
+}
+
+.welcome-copy p {
+    color: var(--hub-text);
+    font-size: 16px;
+    line-height: 1.95;
+    margin-bottom: 14px;
+}
+
+/* =========================
+   VISION AND MISSION
+========================= */
+.values-section {
+    padding: 75px 0 90px;
+    background: #f6f9f7;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 42px;
+}
+
+.section-heading h2 {
+    font-size: clamp(28px, 4vw, 38px);
+    margin-bottom: 14px;
+}
+
+.value-card {
+    height: 100%;
+    padding: 38px;
+    background: var(--hub-white);
+    border: 1px solid #e7eee9;
+    border-radius: var(--hub-radius);
+    box-shadow: var(--hub-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 42px rgba(22, 54, 38, 0.13);
+}
+
+.value-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 24px;
+    border-radius: 15px;
+    background: var(--hub-light-green);
+    color: var(--hub-green);
+    font-size: 27px;
+}
+
+.value-card h3 {
+    margin-bottom: 16px;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.value-card hr {
+    width: 48px;
+    height: 3px;
+    background: var(--hub-green);
+    border: 0;
+    opacity: 1;
+    margin: 0 0 20px;
+}
+
+.value-card p {
+    color: var(--hub-text);
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 0;
+}
+
+/* =========================
+   GOALS SECTION
+========================= */
+.goals-section {
+    padding: 85px 0 95px;
+    background: #fff;
+}
+
+.goals-card {
+    padding: 48px 35px;
+    border: 1px solid #e7eee9;
+    border-radius: var(--hub-radius);
+    box-shadow: var(--hub-shadow);
+    background: #fff;
+}
+
+.goal-item {
+    height: 100%;
+    padding: 20px 12px;
+    transition: transform 0.25s ease;
+}
+
+.goal-item:hover {
+    transform: translateY(-5px);
+}
+
+.goal-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    border-radius: 20px;
+    background: var(--hub-light-green);
+    color: var(--hub-green);
+    font-size: 32px;
+}
+
+.goal-item h5 {
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 750;
+    margin-bottom: 0;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    padding: 70px 0 25px;
+    background: #10271d;
+    color: #d4e1d8;
+}
+
+.footer-title {
+    position: relative;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.footer-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 42px;
+    height: 3px;
+    border-radius: 5px;
+    background: #61c786;
+}
+
+.footer p {
+    color: #c4d3c9;
+    font-size: 14px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.footer p i {
+    color: #79d49a;
+}
+
+.footer-links {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 13px;
+}
+
+.footer-links a {
+    color: #c4d3c9;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.25s ease, padding 0.25s ease;
+}
+
+.footer-links a:hover {
+    padding-left: 5px;
+    color: #79d49a;
+}
+
+.social-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.social-icons a:hover {
+    background: var(--hub-green);
+    transform: translateY(-3px);
+}
+
+.footer-line {
+    margin: 45px 0 25px;
+    border-color: rgba(255,255,255,0.15);
+}
+
+.copyright {
+    color: #fff !important;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.footer small {
+    color: #aebfb4;
+    line-height: 1.8;
+}
+
+/* =========================
+   ANIMATIONS AND ACCESSIBILITY
+========================= */
+@keyframes heroZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.07); }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 767.98px) {
+    #heroCarousel,
+    #heroCarousel .carousel-item {
+        min-height: 500px;
+        height: 72vh;
+    }
+
+    .hero-overlay {
+        padding: 30px 24px;
+    }
+
+    .hero-overlay h1 {
+        letter-spacing: -0.5px;
+    }
+
+    .hero-overlay .btn {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 10%;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .welcome-section,
+    .values-section,
+    .goals-section {
+        padding: 60px 0;
+    }
+
+    .value-card {
+        padding: 28px;
+    }
+
+    .goals-card {
+        padding: 30px 18px;
+    }
+
+    .footer {
+        padding-top: 55px;
+    }
+
+    .footer-title {
+        margin-bottom: 20px;
+    }
+
+    .footer-line {
+        margin: 30px 0 22px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+
+<div class="home-page">
+
+    <!-- HERO CAROUSEL -->
+    <section class="hero-slider">
+        <div id="heroCarousel"
+             class="carousel slide carousel-fade"
+             data-bs-ride="carousel"
+             data-bs-interval="5000">
+
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel"
+                        data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel"
+                        data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel"
+                        data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#heroCarousel"
+                        data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#heroCarousel"
+                        data-bs-slide-to="4" aria-label="Slide 5"></button>
+            </div>
+
+            <div class="carousel-inner">
+
+                <div class="carousel-item active">
+                    <img src="/media/images/ravaged-roadway-scene-of-severe-pavement-damage-photo.jpg"
+                         class="hero-image" alt="Damaged community road">
+
+                    <div class="hero-overlay">
+                        <div class="container">
+                            <span class="hero-eyebrow">Connected communities. Better living.</span>
+                            <h1>Smart Community Hub</h1>
+                            <h3>Building Better Communities Through Technology</h3>
+                            <p>
+                                Report damaged roads, monitor progress and help
+                                create safer, better-connected communities.
+                            </p>
+                            <a href="{% url 'register' %}"
+                               class="btn btn-hub btn-lg me-2 mb-2">
+                                Join Community <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                            <a href="{% url 'report-issue' %}"
+                               class="btn btn-outline-light btn-lg mb-2">
+                                Report an Issue
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="/media/images/water-gushes-rusty-metal-pipe-break-pipeline-accident-industrial-emergency-stream-leaks-damaged-old-plumbing-system-pollution-385656164.webp"
+                         class="hero-image" alt="Burst water pipe">
+
+                    <div class="hero-overlay">
+                        <div class="container">
+                            <span class="hero-eyebrow">Reliable water services</span>
+                            <h1>Burst Water Pipes</h1>
+                            <p>
+                                Report water leaks early and help prevent
+                                further damage in your community.
+                            </p>
+                            <a href="{% url 'report-issue' %}"
+                               class="btn btn-hub btn-lg">
+                                Report Water Leak <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="/media/images/low-angle-view-of-a-severed-wooden-utility-pole-tangled-with-overhead-electric-supply-wires-in-the-aftermath-of-storm-that-cuts-village-power-supply-2JBDG36.jpg"
+                         class="hero-image" alt="Damaged electricity pole">
+
+                    <div class="hero-overlay">
+                        <div class="container">
+                            <span class="hero-eyebrow">Safety starts with reporting</span>
+                            <h1>Electricity Faults</h1>
+                            <p>
+                                Report damaged power lines, transformers
+                                and electricity outages.
+                            </p>
+                            <a href="{% url 'report-issue' %}"
+                               class="btn btn-hub btn-lg">
+                                Report Fault <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="/media/images/illegal-waste-in-Durban.webp"
+                         class="hero-image" alt="Illegal waste dumping">
+
+                    <div class="hero-overlay">
+                        <div class="container">
+                            <span class="hero-eyebrow">A cleaner environment</span>
+                            <h1>Cleaner Communities</h1>
+                            <p>
+                                Work together to address illegal dumping
+                                and keep shared spaces clean.
+                            </p>
+                            <a href="{% url 'report-issue' %}"
+                               class="btn btn-hub btn-lg">
+                                Report Dumping <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="/media/images/OIP.webp"
+                         class="hero-image" alt="Community development">
+
+                    <div class="hero-overlay">
+                        <div class="container">
+                            <span class="hero-eyebrow">Your voice matters</span>
+                            <h1>Empower Your Community</h1>
+                            <p>
+                                One platform. One community.
+                                More opportunities to make a difference.
+                            </p>
+                            <a href="{% url 'register' %}"
+                               class="btn btn-hub btn-lg">
+                                Get Started <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev" type="button"
+                    data-bs-target="#heroCarousel" data-bs-slide="prev"
+                    aria-label="Previous slide">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+
+            <button class="carousel-control-next" type="button"
+                    data-bs-target="#heroCarousel" data-bs-slide="next"
+                    aria-label="Next slide">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- WELCOME -->
+    <section class="welcome-section">
+        <div class="container">
+            <div class="welcome-copy">
+                <span class="section-label">About the platform</span>
+                <h2>Welcome to Smart Community Hub</h2>
+                <p>
+                    Smart Community Hub is a digital platform designed to
+                    strengthen communication between community members and
+                    local authorities.
+                </p>
+                <p>
+                    Residents can report service delivery issues, monitor
+                    progress, receive important notifications, participate in
+                    community events and discover employment opportunities—all
+                    from one central platform.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISION AND MISSION -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-label">Our purpose</span>
+                <h2>Vision &amp; Mission</h2>
+                <p class="section-description">
+                    Working towards stronger communities through technology,
+                    collaboration and transparency.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-eye-fill" aria-hidden="true"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <hr>
+                        <p>
+                            To build smart, connected and sustainable
+                            communities where citizens actively participate
+                            in improving service delivery through technology,
+                            transparency and collaboration.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="value-card">
+                        <div class="value-icon">
+                            <i class="bi bi-bullseye" aria-hidden="true"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <hr>
+                        <p>
+                            To provide an easy-to-use platform that allows
+                            residents to report community issues, track
+                            progress, access opportunities, receive
+                            notifications and stay informed about community
+                            development initiatives.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GOALS -->
+    <section class="goals-section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-label">What we strive for</span>
+                <h2>Our Goals</h2>
+                <p class="section-description">
+                    Creating meaningful change through community participation
+                    and accessible digital services.
+                </p>
+            </div>
+
+            <div class="goals-card">
+                <div class="row g-4 text-center">
+
+                    <div class="col-6 col-lg-3">
+                        <div class="goal-item">
+                            <div class="goal-icon">
+                                <i class="bi bi-lightning-charge-fill"
+                                   aria-hidden="true"></i>
+                            </div>
+                            <h5>Improve Service Delivery</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="goal-item">
+                            <div class="goal-icon">
+                                <i class="bi bi-people-fill"
+                                   aria-hidden="true"></i>
+                            </div>
+                            <h5>Community Participation</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="goal-item">
+                            <div class="goal-icon">
+                                <i class="bi bi-shield-check"
+                                   aria-hidden="true"></i>
+                            </div>
+                            <h5>Transparency</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="goal-item">
+                            <div class="goal-icon">
+                                <i class="bi bi-globe"
+                                   aria-hidden="true"></i>
+                            </div>
+                            <h5>Smart Communities</h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row gy-5">
+
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="footer-title">Contact Us</h4>
+
+                    <p>
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        Kanyamazane, Mbombela<br>
+                        Mpumalanga, South Africa
+                    </p>
+
+                    <p>
+                        <i class="bi bi-envelope-fill me-2"></i>
+                        <a class="footer-links-link"
+                           href="mailto:smartcommunityhub@gmail.com">
+                            smartcommunityhub@gmail.com
+                        </a>
+                    </p>
+
+                    <p>
+                        <i class="bi bi-telephone-fill me-2"></i>
+                        <a class="footer-links-link" href="tel:+27684540436">
+                            +27 68 454 0436
+                        </a>
+                    </p>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="footer-title">Support Hours</h4>
+
+                    <p>
+                        Monday – Friday<br>
+                        <strong class="text-white">08:00 – 17:00</strong>
+                    </p>
+
+                    <p>
+                        Saturday<br>
+                        <strong class="text-white">08:00 – 13:00</strong>
+                    </p>
+
+                    <p>
+                        Sunday<br>
+                        <strong class="text-white">Closed</strong>
+                    </p>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <h4 class="footer-title">Quick Links</h4>
+
+                    <ul class="footer-links">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    </ul>
+
+                    <div class="social-icons mt-4">
+                        <a href="#" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" aria-label="X">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="footer-line">
+
+            <div class="text-center">
+                <p class="copyright mb-1">
+                    © 2026 Smart Community Hub. All Rights Reserved.
+                </p>
+                <small>
+                    Designed &amp; Developed by
+                    <strong>Zandile Prudence Ngwamba</strong>
+                    <span class="d-inline-block mx-1">|</span>
+                    Diploma in ICT (Application Development)
+                </small>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<style>
+/* Keep footer contact links consistent with the footer text. */
+.footer-links-link {
+    color: #c4d3c9;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.footer-links-link:hover {
+    color: #79d49a;
+}
+</style>
+
+{% endblock %}

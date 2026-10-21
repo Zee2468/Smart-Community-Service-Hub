@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+{% block title %}Residents | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="mb-4"><span class="text-uppercase fw-bold small text-success">Administration</span><h1 class="h2 fw-bold mt-1 mb-1">Residents</h1><p class="text-secondary mb-0">View registered accounts and their report activity.</p></div>
+    <form method="get" class="card card-body mb-3"><div class="input-group"><input class="form-control" type="search" name="search" value="{{ search }}" placeholder="Search username or email"><button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Search</button></div></form>
+    <section class="card"><div class="table-responsive"><table class="table align-middle mb-0"><thead class="table-light"><tr><th class="ps-4">Account</th><th>Email</th><th>Joined</th><th>Reports</th><th>Access</th></tr></thead><tbody>
+    {% for resident in residents %}<tr><td class="ps-4"><div class="fw-semibold">{{ resident.username }}</div>{% if resident.get_full_name %}<small class="text-secondary">{{ resident.get_full_name }}</small>{% endif %}</td><td>{{ resident.email|default:"—" }}</td><td>{{ resident.date_joined|date:"d M Y" }}</td><td>{{ resident.issue_count }}</td><td>{% if resident.is_superuser %}<span class="badge text-bg-danger">Superuser</span>{% elif resident.is_staff %}<span class="badge text-bg-primary">Staff</span>{% else %}<span class="badge text-bg-light">Resident</span>{% endif %}</td></tr>
+    {% empty %}<tr><td colspan="5" class="text-center text-secondary py-5">No residents found.</td></tr>{% endfor %}
+    </tbody></table></div></section>
+</div>
+{% endblock %}

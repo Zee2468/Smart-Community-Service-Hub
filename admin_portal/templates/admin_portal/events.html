@@ -1,0 +1,11 @@
+{% extends "base/base.html" %}
+{% block title %}Community events | eMangweni{% endblock %}
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"><div><span class="text-uppercase fw-bold small text-success">Community content</span><h1 class="h2 fw-bold mt-1 mb-1">Community events</h1><p class="text-secondary mb-0">Review events visible to residents.</p></div><a href="{% url 'create-event' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Add event</a></div>
+    <section class="card"><div class="table-responsive"><table class="table align-middle mb-0"><thead class="table-light"><tr><th class="ps-4">Event</th><th>Location</th><th>Date and time</th><th>Organizer</th></tr></thead><tbody>
+    {% for item in items %}<tr><td class="ps-4 fw-semibold">{{ item.title }}<div class="small text-secondary">{{ item.description|truncatechars:100 }}</div></td><td>{{ item.location }}</td><td>{{ item.event_date|date:"d M Y" }} · {{ item.event_time|time:"H:i" }}</td><td>{{ item.organizer.username }}</td></tr>
+    {% empty %}<tr><td colspan="4" class="text-center text-secondary py-5">No events have been created.</td></tr>{% endfor %}
+    </tbody></table></div></section>
+</div>
+{% endblock %}
