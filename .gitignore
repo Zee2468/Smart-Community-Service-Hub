@@ -13,6 +13,7 @@ staticfiles/
 *.log
 .env
 .env.*
+db.sqlite3
 
 # Editor / OS
 .vscode/
